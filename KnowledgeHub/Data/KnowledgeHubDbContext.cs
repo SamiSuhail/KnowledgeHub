@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KnowledgeHub.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class KnowledgeHubDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public KnowledgeHubDbContext(DbContextOptions<KnowledgeHubDbContext> options)
             : base(options)
         {
         }

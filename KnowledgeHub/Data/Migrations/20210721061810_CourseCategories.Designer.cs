@@ -4,14 +4,16 @@ using KnowledgeHub.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace KnowledgeHub.Data.Migrations
 {
     [DbContext(typeof(KnowledgeHubDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210721061810_CourseCategories")]
+    partial class CourseCategories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,7 +38,7 @@ namespace KnowledgeHub.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("KnowledgeHub.Data.Models.Course", b =>
@@ -68,7 +70,7 @@ namespace KnowledgeHub.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Course");
                 });
 
             modelBuilder.Entity("KnowledgeHub.Data.Models.Video", b =>
@@ -100,7 +102,7 @@ namespace KnowledgeHub.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Videos");
+                    b.ToTable("Video");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

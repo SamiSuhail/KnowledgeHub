@@ -17,6 +17,8 @@ namespace KnowledgeHub.Data.Models
 
         [Required]
         public string Description { get; set; }
+        public Category Category { get; set; }
+        public int CategoryId { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
         public DateTime? LastModified { get; set; }
         public IEnumerable<Video> Videos { get; set; } = new List<Video>();

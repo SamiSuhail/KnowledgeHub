@@ -1,5 +1,6 @@
 using KnowledgeHub.Data;
 using KnowledgeHub.Infrastructure;
+using KnowledgeHub.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -23,7 +24,7 @@ namespace KnowledgeHub
             services
                 .AddDbContext<KnowledgeHubDbContext>(options => options
                         .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
+            
             services
                 .AddDatabaseDeveloperPageExceptionFilter();
 
@@ -39,6 +40,9 @@ namespace KnowledgeHub
 
             services
                 .AddControllersWithViews();
+
+            services
+                .AddTransient<ICourseService, CourseService>();
         }
 
 

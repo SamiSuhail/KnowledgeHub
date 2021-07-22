@@ -10,4 +10,5 @@
         public const int CourseNameMaxLength = 30;
         public const int CourseDescriptionMinLength = 20;
     }
+
 }

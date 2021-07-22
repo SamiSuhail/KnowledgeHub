@@ -1,13 +1,24 @@
-﻿@model List<CoursesCategoryModel>
+﻿@model IEnumerable<CourseCategoryDisplayModel>
 
 <div class="text-center">
     <h1 class="display-4">Courses</h1>
     <h3>Welcome to our courses. Please select a category below to browse the corresponding courses.</h3>
 </div>
 
+<a asp-controller="Course" asp-action="Create" class="btn btn-primary btn-block" role="button">Create New Course</a>
+
+<a asp-area="" asp-controller="Course" asp-action="All" class="display-4 text-dark nav-link">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">All</h1>
+            <p class="lead">Browse all courses.</p>
+        </div>
+    </div>
+</a>
+
 @foreach (var category in @Model)
 {
-    <a asp-area="" asp-controller="Course" asp-action="All" class="display-4 text-dark nav-link">
+    <a asp-area="" asp-controller="Course" asp-action="AllByCategory" asp-route-category="@category.Name" class="display-4 text-dark nav-link">
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <h1 class="display-4">@category.Name</h1>

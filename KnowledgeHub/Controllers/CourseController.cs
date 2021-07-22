@@ -1,8 +1,7 @@
 ﻿using KnowledgeHub.Data;
-using KnowledgeHub.Models;
+using KnowledgeHub.Models.Course;
 using KnowledgeHub.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace KnowledgeHub.Controllers
 {
@@ -21,9 +20,33 @@ namespace KnowledgeHub.Controllers
             return View(allCategories);
         }
 
-        public IActionResult Category(string name)
+        public IActionResult All()
         {
-            return View();
+            var allCourses = courses.AllCourses();
+
+            return View(allCourses);
+        }
+
+        public IActionResult AllByCategory(string category)
+        {
+            var allCourses = courses.AllCourses(category);
+
+            return View(allCourses);
+        }
+
+        public IActionResult Create()
+                => View(new CourseCreateFormModel() { Categories = courses.AllCategories() });
+
+        [HttpPost]
+        public IActionResult Create(CourseCreateFormModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            courses.Create(model);
+            return Redirect("/Course/All");
         }
     }
 }

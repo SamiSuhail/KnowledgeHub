@@ -1,11 +1,14 @@
-﻿using KnowledgeHub.Models;
+﻿using KnowledgeHub.Models.Course;
 using System.Collections.Generic;
 
 namespace KnowledgeHub.Services
 {
     public interface ICourseService
     {
-        public IEnumerable<CoursesCategoryModel> AllCategories();
+        public IEnumerable<CourseCategoryDisplayModel> AllCategories();
+        public IEnumerable<CourseAllDisplayModel> AllCourses();
+        public IEnumerable<CourseAllDisplayModel> AllCourses(string category);
+        public void Create(CourseCreateFormModel model);
         public void SeedCategories();
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace KnowledgeHub.Models.Course
+namespace KnowledgeHub.Models.Courses
 {
     using static Data.DataConstants;
     public class CourseCreateFormModel
@@ -19,6 +19,6 @@ namespace KnowledgeHub.Models.Course
         public string Category { get; set; }
         public string ImageUrl { get; set; }
 
-        public IEnumerable<CourseCategoryDisplayModel> Categories {get;set;}
+        public IEnumerable<CategoryDisplayModel> Categories {get;set;}
     }
 }

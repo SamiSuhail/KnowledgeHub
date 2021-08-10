@@ -3,12 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 using static KnowledgeHub.Data.DataConstants;
 
-namespace KnowledgeHub.Data.Models
+namespace KnowledgeHub.Models.Videos
 {
-    public class Video
+    public class VideoDisplayModel
     {
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(VideoNameMaxLength)]
         public string Name { get; set; }
@@ -16,10 +14,6 @@ namespace KnowledgeHub.Data.Models
         [Required]
         public string URL { get; set; }
 
-        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
-
-        public int TopicId { get; set; }
-        public Topic Topic { get; set; }
-
+        public DateTime CreatedOn { get; set; }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using KnowledgeHub.Data;
 using KnowledgeHub.Data.Models;
-using KnowledgeHub.Models.Course;
+using KnowledgeHub.Models.Courses;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace KnowledgeHub.Services
+namespace KnowledgeHub.Services.Courses
 {
     public class CourseService : ICourseService
     {
@@ -13,14 +13,17 @@ namespace KnowledgeHub.Services
         {
             this.data = data;
         }
-        public IEnumerable<CourseCategoryDisplayModel> AllCategories()
+        public IEnumerable<CategoryDisplayModel> AllCategories()
             => data.Categories
-            .Select(c => new CourseCategoryDisplayModel()
+            .Select(c => new CategoryDisplayModel()
             {
                 Name = c.Name,
                 Description = c.Description
             })
             .ToList();
+
+        private string GetCategoryName(int id)
+            => data.Categories.FirstOrDefault(c => c.Id == id).Name;
 
 
         public IEnumerable<CourseAllDisplayModel> AllCourses(string category)
@@ -30,9 +33,10 @@ namespace KnowledgeHub.Services
                 return data.Courses
               .Select(c => new CourseAllDisplayModel()
               {
+                  Id = c.Id,
                   Category = c.Category.Name,
                   Description = c.Description,
-                  LastModified = c.LastModified,
+                  CreatedOn = c.CreatedOn,
                   Name = c.Name,
                   ImageUrl = c.ImageUrl
               })
@@ -43,13 +47,28 @@ namespace KnowledgeHub.Services
               .Where(c => c.Category.Name == category)
               .Select(c => new CourseAllDisplayModel()
               {
+                  Id = c.Id,
                   Category = c.Category.Name,
                   Description = c.Description,
-                  LastModified = c.LastModified,
+                  CreatedOn = c.CreatedOn,
                   Name = c.Name,
                   ImageUrl = c.ImageUrl
               })
               .ToList();
+        }
+
+        public IEnumerable<Topic> AllTopics(string courseId)
+            => data.Topics.Where(t => t.CourseId.ToString() == courseId);
+        public void AddTopic(int courseId, CourseAddTopicFormModel model)
+        {
+            data.Topics.Add(new Topic()
+            {
+                CourseId = courseId,
+                Description = model.Description,
+                Name = model.Name,
+            });
+
+            data.SaveChanges();
         }
         public void Create(CourseCreateFormModel model)
         {
@@ -60,12 +79,34 @@ namespace KnowledgeHub.Services
                 Name = model.Name,
                 Description = model.Description,
                 Category = ToCategory(category),
-                ImageUrl = model.ImageUrl
+                ImageUrl = model.ImageUrl,
             };
+
+            if (model.ImageUrl == null)
+            {
+                newCourse.ImageUrl = @"https://elearningindustry.com/wp-content/uploads/2020/01/designing-effective-elearning-courses.jpg";
+            }
 
             data.Courses.Add(newCourse);
             data.SaveChanges();
         }
+
+        public CourseDetailsDisplayModel Details(int id)
+        {
+            var course = data.Courses.FirstOrDefault(c => c.Id == id);
+
+            return new CourseDetailsDisplayModel() 
+            { 
+                Category = GetCategoryName(course.CategoryId),
+                CreatedOn = course.CreatedOn,
+                Description = course.Description,
+                Id = course.Id,
+                ImageUrl = course.ImageUrl,
+                LastModified = course.LastModified,
+                Name = course.Name,
+            };
+        }
+
 
         public void SeedCategories()
         {
@@ -86,7 +127,10 @@ namespace KnowledgeHub.Services
             data.SaveChanges();
         }
 
-        private Category ToCategory(CourseCategoryDisplayModel model)
+
+        private Category ToCategory(CategoryDisplayModel model)
                 => data.Categories.FirstOrDefault(c => c.Name == model.Name);
+
+        
     }
 }

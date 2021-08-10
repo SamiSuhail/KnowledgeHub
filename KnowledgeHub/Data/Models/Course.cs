@@ -20,9 +20,9 @@ namespace KnowledgeHub.Data.Models
         public Category Category { get; set; }
         public int CategoryId { get; set; }
         [Required]
-        public string ImageUrl { get; set; } = @"https://elearningindustry.com/wp-content/uploads/2020/01/designing-effective-elearning-courses.jpg";
+        public string ImageUrl { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
         public DateTime? LastModified { get; set; }
-        public IEnumerable<Video> Videos { get; set; } = new List<Video>();
+        public IEnumerable<Topic> Topics { get; set; } = new List<Topic>();
     }
 }

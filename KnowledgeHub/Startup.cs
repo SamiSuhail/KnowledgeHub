@@ -1,6 +1,7 @@
 using KnowledgeHub.Data;
 using KnowledgeHub.Infrastructure;
-using KnowledgeHub.Services;
+using KnowledgeHub.Services.Courses;
+using KnowledgeHub.Services.Videos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -42,7 +43,8 @@ namespace KnowledgeHub
                 .AddControllersWithViews();
 
             services
-                .AddTransient<ICourseService, CourseService>();
+                .AddTransient<ICourseService, CourseService>()
+                .AddTransient<IVideoService, VideoService>();
         }
 
 

@@ -1,6 +1,5 @@
-﻿using KnowledgeHub.Data;
-using KnowledgeHub.Models.Course;
-using KnowledgeHub.Services;
+﻿using KnowledgeHub.Models.Courses;
+using KnowledgeHub.Services.Courses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KnowledgeHub.Controllers
@@ -8,7 +7,7 @@ namespace KnowledgeHub.Controllers
     public class CourseController : Controller
     {
         private ICourseService courses;
-        public CourseController(ICourseService courses, KnowledgeHubDbContext data)
+        public CourseController(ICourseService courses)
         {
             this.courses = courses;
         }
@@ -34,6 +33,21 @@ namespace KnowledgeHub.Controllers
             return View(allCourses);
         }
 
+        public IActionResult AddTopic(int id)
+            => View();
+
+        [HttpPost]
+        public IActionResult AddTopic(int id, CourseAddTopicFormModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            courses.AddTopic(id, model);
+            return Redirect($"/Video/All?courseId={id}");
+        }
+
         public IActionResult Create()
                 => View(new CourseCreateFormModel() { Categories = courses.AllCategories() });
 
@@ -48,6 +62,13 @@ namespace KnowledgeHub.Controllers
 
             courses.Create(model);
             return Redirect("/Course/All");
+        }
+
+        public IActionResult Details(int id)
+        {
+            var course = courses.Details(id);
+
+            return View(course);
         }
     }
 }

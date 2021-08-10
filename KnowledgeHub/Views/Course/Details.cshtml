@@ -1,0 +1,34 @@
+﻿@model CourseDetailsDisplayModel
+
+<img src="@Model.ImageUrl" class="rounded mx-auto d-block" alt="Course image">
+
+<h4>Name: @Model.Name</h4>
+<h4>Category: @Model.Category</h4>
+<h4>Description: @Model.Description</h4>
+<h4>Created On: @Model.CreatedOn</h4>
+<h4>
+    Last Modified: @if (Model.LastModified == null)
+    {
+        @:Never
+    }
+    else
+    {
+        @Model.LastModified
+    }
+</h4>
+<br/>
+<div>
+    <a>Please chose one of the below topics, to see the corresponding videos:</a>
+    <a asp-area="" asp-controller="Course" asp-action="AddTopic" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">Add topic</a>
+</div>
+<br/>
+<div class="list-group">
+    @foreach (var topic in Model.Topics)
+    {
+        <a asp-area="" asp-controller="Video" asp-action="All" asp-route-courseId="@Model.Id" asp-route-topicId="@topic.Id" class="list-group-item list-group-item-action active">
+            @topic.Name
+        </a>
+    }
+</div>
+<br/>
+<a asp-controller="Video" asp-action="All" asp-route-courseId="@Model.Id" class="btn btn-primary btn-lg btn-block">All Videos</a>

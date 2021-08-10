@@ -8,6 +8,7 @@ namespace KnowledgeHub.Data
     {
         public DbSet<Course> Courses { get; init; }
         public DbSet<Video> Videos { get; init; }
+        public DbSet<Topic> Topics { get; init; }
         public DbSet<Category> Categories { get; init; }
 
         public KnowledgeHubDbContext(DbContextOptions<KnowledgeHubDbContext> options)
@@ -19,7 +20,7 @@ namespace KnowledgeHub.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Course>()
-                .HasMany(c => c.Videos)
+                .HasMany(c => c.Topics)
                 .WithOne(v => v.Course)
                 .HasForeignKey(cv => cv.CourseId)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -29,6 +30,13 @@ namespace KnowledgeHub.Data
                 .WithMany(cat => cat.Courses)
                 .HasForeignKey(c => c.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Topic>()
+                .HasMany(t => t.Videos)
+                .WithOne(v => v.Topic)
+                .HasForeignKey(v => v.TopicId)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
             base.OnModelCreating(builder);
         }

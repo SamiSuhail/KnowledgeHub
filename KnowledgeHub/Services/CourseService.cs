@@ -22,29 +22,35 @@ namespace KnowledgeHub.Services
             })
             .ToList();
 
-        public IEnumerable<CourseAllDisplayModel> AllCourses()
-            => data.Courses
-            .Select(c => new CourseAllDisplayModel()
-            {
-                Category = c.Category.Name,
-                Description = c.Description,
-                LastModified = c.LastModified,
-                Name = c.Name,
-            })
-            .ToList();
 
         public IEnumerable<CourseAllDisplayModel> AllCourses(string category)
-            => data.Courses
-            .Where(c => c.Category.Name == category)
-            .Select(c => new CourseAllDisplayModel()
+        {
+            if (category == null)
             {
-                Category = c.Category.Name,
-                Description = c.Description,
-                LastModified = c.LastModified,
-                Name = c.Name,
-            })
-            .ToList();
+                return data.Courses
+              .Select(c => new CourseAllDisplayModel()
+              {
+                  Category = c.Category.Name,
+                  Description = c.Description,
+                  LastModified = c.LastModified,
+                  Name = c.Name,
+                  ImageUrl = c.ImageUrl
+              })
+              .ToList();
+            }
 
+            return data.Courses
+              .Where(c => c.Category.Name == category)
+              .Select(c => new CourseAllDisplayModel()
+              {
+                  Category = c.Category.Name,
+                  Description = c.Description,
+                  LastModified = c.LastModified,
+                  Name = c.Name,
+                  ImageUrl = c.ImageUrl
+              })
+              .ToList();
+        }
         public void Create(CourseCreateFormModel model)
         {
             var category = AllCategories().FirstOrDefault(c => c.Name == model.Category);
@@ -54,6 +60,7 @@ namespace KnowledgeHub.Services
                 Name = model.Name,
                 Description = model.Description,
                 Category = ToCategory(category),
+                ImageUrl = model.ImageUrl
             };
 
             data.Courses.Add(newCourse);
@@ -79,7 +86,7 @@ namespace KnowledgeHub.Services
             data.SaveChanges();
         }
 
-        private static Category ToCategory(CourseCategoryDisplayModel model)
-                => new Category() { Name = model.Name, Description = model.Description };
+        private Category ToCategory(CourseCategoryDisplayModel model)
+                => data.Categories.FirstOrDefault(c => c.Name == model.Name);
     }
 }

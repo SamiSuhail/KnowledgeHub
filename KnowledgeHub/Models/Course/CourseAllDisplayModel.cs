@@ -12,5 +12,8 @@ namespace KnowledgeHub.Models.Course
         [Required]
         public string Category { get; set; }
         public DateTime? LastModified { get; set; }
+
+        [Required]
+        public string ImageUrl { get; set; }
     }
 }

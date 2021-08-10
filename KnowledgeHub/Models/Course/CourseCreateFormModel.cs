@@ -17,6 +17,7 @@ namespace KnowledgeHub.Models.Course
 
         [Required]
         public string Category { get; set; }
+        public string ImageUrl { get; set; }
 
         public IEnumerable<CourseCategoryDisplayModel> Categories {get;set;}
     }

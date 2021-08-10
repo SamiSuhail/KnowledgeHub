@@ -20,14 +20,14 @@ namespace KnowledgeHub.Controllers
             return View(allCategories);
         }
 
-        public IActionResult All()
-        {
-            var allCourses = courses.AllCourses();
+        //public IActionResult All()
+        //{
+        //    var allCourses = courses.AllCourses();
 
-            return View(allCourses);
-        }
+        //    return View(allCourses);
+        //}
 
-        public IActionResult AllByCategory(string category)
+        public IActionResult All(string category)
         {
             var allCourses = courses.AllCourses(category);
 
@@ -42,6 +42,7 @@ namespace KnowledgeHub.Controllers
         {
             if (!ModelState.IsValid)
             {
+                model.Categories = courses.AllCategories();
                 return View(model);
             }
 

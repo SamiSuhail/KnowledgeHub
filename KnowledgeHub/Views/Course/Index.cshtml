@@ -18,7 +18,7 @@
 
 @foreach (var category in @Model)
 {
-    <a asp-area="" asp-controller="Course" asp-action="AllByCategory" asp-route-category="@category.Name" class="display-4 text-dark nav-link">
+    <a asp-area="" asp-controller="Course" asp-action="All" asp-route-category="@category.Name" class="display-4 text-dark nav-link">
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <h1 class="display-4">@category.Name</h1>

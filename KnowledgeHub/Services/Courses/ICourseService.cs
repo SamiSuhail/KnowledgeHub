@@ -1,5 +1,4 @@
-﻿using KnowledgeHub.Data.Models;
-using KnowledgeHub.Models.Courses;
+﻿using KnowledgeHub.Models.Courses;
 using KnowledgeHub.Models.Topics;
 using System.Collections.Generic;
 
@@ -9,7 +8,7 @@ namespace KnowledgeHub.Services.Courses
     {
         public IEnumerable<CategoryDisplayModel> AllCategories();
         public IEnumerable<CourseAllDisplayModel> AllCourses(string category);
-        public IEnumerable<Topic> AllTopics(string courseId);
+        public IEnumerable<TopicDisplayModel> AllTopics(string courseId);
 
         public void AddTopic(int courseId, CourseAddTopicFormModel model);
         public void Create(CourseCreateFormModel model);

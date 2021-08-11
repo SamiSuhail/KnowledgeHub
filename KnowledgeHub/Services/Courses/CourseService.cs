@@ -1,6 +1,7 @@
 ﻿using KnowledgeHub.Data;
 using KnowledgeHub.Data.Models;
 using KnowledgeHub.Models.Courses;
+using KnowledgeHub.Models.Topics;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -57,8 +58,16 @@ namespace KnowledgeHub.Services.Courses
               .ToList();
         }
 
-        public IEnumerable<Topic> AllTopics(string courseId)
-            => data.Topics.Where(t => t.CourseId.ToString() == courseId);
+        public IEnumerable<TopicDisplayModel> AllTopics(string courseId)
+            => data.Topics.Where(t => t.CourseId.ToString() == courseId)
+            .Select(t => new TopicDisplayModel()
+            {
+                Id = t.Id,
+                CourseId = t.CourseId,
+                Name = t.Name,
+            });
+
+        
         public void AddTopic(int courseId, CourseAddTopicFormModel model)
         {
             data.Topics.Add(new Topic()
@@ -94,9 +103,16 @@ namespace KnowledgeHub.Services.Courses
         public CourseDetailsDisplayModel Details(int id)
         {
             var course = data.Courses.FirstOrDefault(c => c.Id == id);
+            var topics = data.Topics.Where(t => t.CourseId == id)
+                    .Select(t => new TopicDisplayModel()
+                    {
+                        CourseId = t.CourseId,
+                        Id = t.Id,
+                        Name = t.Name,
+                    });
 
-            return new CourseDetailsDisplayModel() 
-            { 
+            return new CourseDetailsDisplayModel()
+            {
                 Category = GetCategoryName(course.CategoryId),
                 CreatedOn = course.CreatedOn,
                 Description = course.Description,
@@ -104,6 +120,7 @@ namespace KnowledgeHub.Services.Courses
                 ImageUrl = course.ImageUrl,
                 LastModified = course.LastModified,
                 Name = course.Name,
+                Topics = topics
             };
         }
 
@@ -131,6 +148,6 @@ namespace KnowledgeHub.Services.Courses
         private Category ToCategory(CategoryDisplayModel model)
                 => data.Categories.FirstOrDefault(c => c.Name == model.Name);
 
-        
+
     }
 }

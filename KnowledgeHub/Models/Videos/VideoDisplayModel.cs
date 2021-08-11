@@ -12,7 +12,7 @@ namespace KnowledgeHub.Models.Videos
         public string Name { get; set; }
 
         [Required]
-        public string URL { get; set; }
+        public string Url { get; set; }
 
         public DateTime CreatedOn { get; set; }
     }

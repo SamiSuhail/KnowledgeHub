@@ -1,8 +1,6 @@
-﻿using KnowledgeHub.Models.Topics;
-using KnowledgeHub.Services.Courses;
+﻿using KnowledgeHub.Services.Courses;
 using KnowledgeHub.Services.Videos;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace KnowledgeHub.Controllers
 {
@@ -15,13 +13,9 @@ namespace KnowledgeHub.Controllers
             this.videos = videos;
             this.courses = courses;
         }
-        public IActionResult All(string courseId)
-        {
-            var topics = courses.AllTopics(courseId);
 
-            var topicsDisplayModel = new List<TopicDisplayModel>();
+        public IActionResult All(string courseId, string topicId)
+        => View(videos.AllVideos(courseId, topicId));
 
-            return View(topicsDisplayModel);
-        }
     }
 }

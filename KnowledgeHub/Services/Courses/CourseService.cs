@@ -68,8 +68,13 @@ namespace KnowledgeHub.Services.Courses
             });
 
         
-        public void AddTopic(int courseId, CourseAddTopicFormModel model)
+        public bool AddTopic(int courseId, CourseAddTopicFormModel model)
         {
+            if (data.Topics.Where(t => t.CourseId == courseId).Any(t => t.Name == model.Name))
+            {
+                return false;
+            }
+
             data.Topics.Add(new Topic()
             {
                 CourseId = courseId,
@@ -78,6 +83,7 @@ namespace KnowledgeHub.Services.Courses
             });
 
             data.SaveChanges();
+            return true;
         }
         public void Create(CourseCreateFormModel model)
         {

@@ -1,18 +1,26 @@
 ﻿@model VideoAllDisplayModel
 
+@{ 
+    ViewBag.CurrentCourse = Model.Topics.FirstOrDefault().CourseId;
+}
+
 <div class="card text-center">
     <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
             @foreach (var topic in Model.Topics)
             {
                 <li class="nav-item">
-                    <a asp-area="" asp-controller="Video" asp-action="All" asp-route-courseId="@topic.CourseId" asp-route-topicId="@topic.Id" class="nav-link active">@topic.Name</a>
+                    <a asp-area="" asp-controller="Video" asp-action="All" asp-route-courseId="@ViewBag.CurrentCourse" asp-route-topicId="@topic.Id" class="nav-link active">@topic.Name</a>
                 </li>
             }
         </ul>
     </div>
     <div class="card-body">
-        <a asp-area="" asp-controller="Course" asp-action="Details" asp-route-id="@Model.Topics.FirstOrDefault().CourseId" class="btn btn-primary">Go back to course details.</a>
+        <a asp-area="" asp-controller="Video" asp-action="All" asp-route-courseId="@ViewBag.CurrentCourse" class="btn btn-primary">All Videos</a>
+
+        <a asp-area="" asp-controller="Course" asp-action="Details" asp-route-id="@ViewBag.CurrentCourse" class="btn btn-primary">Go back to course details.</a>
+
+        <a asp-area="" asp-controller="Video" asp-action="Add" asp-route-courseId="@ViewBag.CurrentCourse" class="btn btn-success">Add Video</a>
     </div>
 </div>
 

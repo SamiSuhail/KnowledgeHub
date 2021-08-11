@@ -44,7 +44,12 @@ namespace KnowledgeHub.Controllers
                 return View(model);
             }
 
-            courses.AddTopic(id, model);
+            var topicNameUnused = courses.AddTopic(id, model);
+
+            if (!topicNameUnused)
+            {
+                return View(model);
+            }
             return Redirect($"/Video/All?courseId={id}");
         }
 

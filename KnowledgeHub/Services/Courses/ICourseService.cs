@@ -10,7 +10,7 @@ namespace KnowledgeHub.Services.Courses
         public IEnumerable<CourseAllDisplayModel> AllCourses(string category);
         public IEnumerable<TopicDisplayModel> AllTopics(string courseId);
 
-        public void AddTopic(int courseId, CourseAddTopicFormModel model);
+        public bool AddTopic(int courseId, CourseAddTopicFormModel model);
         public void Create(CourseCreateFormModel model);
         public CourseDetailsDisplayModel Details(int id);
         public void SeedCategories();

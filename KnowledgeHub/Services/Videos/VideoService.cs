@@ -1,7 +1,7 @@
 ﻿using KnowledgeHub.Data;
+using KnowledgeHub.Data.Models;
 using KnowledgeHub.Models.Topics;
 using KnowledgeHub.Models.Videos;
-using KnowledgeHub.Services.Courses;
 using System.Linq;
 
 namespace KnowledgeHub.Services.Videos
@@ -14,7 +14,27 @@ namespace KnowledgeHub.Services.Videos
             this.data = data;
         }
 
-        public VideoAllDisplayModel AllVideos(string courseId, string topicId)
+        public bool Add(string courseId, VideoAddFormModel model)
+        {
+            var topicId = data.Topics.FirstOrDefault(t => t.Name == model.Topic && t.CourseId == int.Parse(courseId)).Id;
+
+            if (data.Videos.Where(v => v.TopicId == topicId).Any(v => v.Name == model.Name))
+            {
+                return false;
+            }
+
+            data.Videos.Add(new Video()
+            {
+                Name = model.Name,
+                TopicId = topicId,
+                URL = model.URL,
+            });
+
+            data.SaveChanges();
+            return true;
+        }
+
+        public VideoAllDisplayModel AllVideos(string courseId, string topicId = null)
         {
             var allTopics = data.Topics.Where(t => t.CourseId == int.Parse(courseId))
                     .Select(t => new TopicDisplayModel

@@ -17,21 +17,29 @@ namespace KnowledgeHub.Services.Videos
         public VideoAllDisplayModel AllVideos(string courseId, string topicId)
         {
             var allTopics = data.Topics.Where(t => t.CourseId == int.Parse(courseId))
-                    .Select(t => new TopicDisplayModel 
-                    { 
+                    .Select(t => new TopicDisplayModel
+                    {
                         CourseId = t.CourseId,
                         Id = t.Id,
                         Name = t.Name,
                     }).ToList();
-            var allVideos = data.Videos.Where(v => v.TopicId == int.Parse(topicId))
-                    .Select(v => new VideoDisplayModel()
-                    {
-                        Name = v.Name,
-                        Url = v.URL,
-                        CreatedOn = v.CreatedOn,
-                    }).ToList();
 
-            return new VideoAllDisplayModel() 
+            var allVideos = topicId == null
+                        ? data.Videos.Select(v => new VideoDisplayModel()
+                        {
+                            Name = v.Name,
+                            Url = v.URL,
+                            CreatedOn = v.CreatedOn,
+                        }).ToList()
+                        : data.Videos.Where(v => v.TopicId == int.Parse(topicId))
+                        .Select(v => new VideoDisplayModel()
+                        {
+                            Name = v.Name,
+                            Url = v.URL,
+                            CreatedOn = v.CreatedOn,
+                        }).ToList();
+
+            return new VideoAllDisplayModel()
             {
                 Topics = allTopics,
                 Videos = allVideos,

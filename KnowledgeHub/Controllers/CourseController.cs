@@ -48,9 +48,6 @@ namespace KnowledgeHub.Controllers
             return Redirect($"/Video/All?courseId={id}");
         }
 
-        public IActionResult AllTopics(string courseId)
-        => View(courses.AllTopics(courseId));
-
         public IActionResult Create()
                 => View(new CourseCreateFormModel() { Categories = courses.AllCategories() });
 

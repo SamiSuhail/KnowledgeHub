@@ -14,8 +14,8 @@ namespace KnowledgeHub.Controllers
             this.courses = courses;
         }
 
-        public IActionResult All(string courseId, string topicId)
-        => View(videos.AllVideos(courseId, topicId));
+        public IActionResult All(string courseId, string topicId = null)
+            => View(videos.AllVideos(courseId, topicId));
 
     }
 }

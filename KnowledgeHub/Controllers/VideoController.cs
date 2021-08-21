@@ -1,6 +1,8 @@
 ﻿using KnowledgeHub.Models.Videos;
 using KnowledgeHub.Services.Courses;
+using KnowledgeHub.Services.Courses.Models;
 using KnowledgeHub.Services.Videos;
+using KnowledgeHub.Services.Videos.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KnowledgeHub.Controllers
@@ -30,7 +32,16 @@ namespace KnowledgeHub.Controllers
                 return View(model);
             }
 
-            var videoNameUnused = videos.Add(courseId, model);
+
+            var serviceModel = new VideoAddServiceModel()
+            {
+                Name = model.Name,
+                Topic = model.Name,
+                Topics = model.Topics,
+                URL = model.URL,
+            };
+
+            var videoNameUnused = videos.Add(courseId, serviceModel);
 
             if (!videoNameUnused)
             {

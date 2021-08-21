@@ -1,7 +1,7 @@
 ﻿using KnowledgeHub.Data;
 using KnowledgeHub.Data.Models;
-using KnowledgeHub.Models.Topics;
-using KnowledgeHub.Models.Videos;
+using KnowledgeHub.Services.Courses.Models;
+using KnowledgeHub.Services.Videos.Models;
 using System.Linq;
 
 namespace KnowledgeHub.Services.Videos
@@ -14,7 +14,7 @@ namespace KnowledgeHub.Services.Videos
             this.data = data;
         }
 
-        public bool Add(string courseId, VideoAddFormModel model)
+        public bool Add(string courseId, VideoAddServiceModel model)
         {
             var topicId = data.Topics.FirstOrDefault(t => t.Name == model.Topic && t.CourseId == int.Parse(courseId)).Id;
 
@@ -34,10 +34,10 @@ namespace KnowledgeHub.Services.Videos
             return true;
         }
 
-        public VideoAllDisplayModel AllVideos(string courseId, string topicId = null)
+        public VideoAllServiceModel AllVideos(string courseId, string topicId = null)
         {
             var allTopics = data.Topics.Where(t => t.CourseId == int.Parse(courseId))
-                    .Select(t => new TopicDisplayModel
+                    .Select(t => new TopicServiceModel
                     {
                         CourseId = t.CourseId,
                         Id = t.Id,
@@ -45,21 +45,21 @@ namespace KnowledgeHub.Services.Videos
                     }).ToList();
 
             var allVideos = topicId == null
-                        ? data.Videos.Select(v => new VideoDisplayModel()
+                        ? data.Videos.Select(v => new VideoServiceModel()
                         {
                             Name = v.Name,
                             Url = v.URL,
                             CreatedOn = v.CreatedOn,
                         }).ToList()
                         : data.Videos.Where(v => v.TopicId == int.Parse(topicId))
-                        .Select(v => new VideoDisplayModel()
+                        .Select(v => new VideoServiceModel()
                         {
                             Name = v.Name,
                             Url = v.URL,
                             CreatedOn = v.CreatedOn,
                         }).ToList();
 
-            return new VideoAllDisplayModel()
+            return new VideoAllServiceModel()
             {
                 Topics = allTopics,
                 Videos = allVideos,

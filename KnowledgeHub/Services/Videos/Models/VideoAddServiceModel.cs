@@ -1,22 +1,18 @@
 ﻿using KnowledgeHub.Services.Courses.Models;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-using static KnowledgeHub.Data.DataConstants;
-
-namespace KnowledgeHub.Models.Videos
+namespace KnowledgeHub.Services.Videos.Models
 {
-    public class VideoAddFormModel
+    public class VideoAddServiceModel
     {
-        [Required]
-        [MaxLength(VideoNameMaxLength)]
         public string Name { get; set; }
 
-        [Required]
         public string URL { get; set; }
 
         public string Topic { get; set; }
         public IEnumerable<TopicServiceModel> Topics { get; set; }
-
     }
 }

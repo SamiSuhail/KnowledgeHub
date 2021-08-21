@@ -1,5 +1,6 @@
 ﻿using KnowledgeHub.Models.Courses;
 using KnowledgeHub.Services.Courses;
+using KnowledgeHub.Services.Courses.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KnowledgeHub.Controllers
@@ -13,7 +14,6 @@ namespace KnowledgeHub.Controllers
         }
         public IActionResult Index()
         {
-            courses.SeedCategories();
             var allCategories = courses.AllCategories();
 
             return View(allCategories);
@@ -44,7 +44,13 @@ namespace KnowledgeHub.Controllers
                 return View(model);
             }
 
-            var topicNameUnused = courses.AddTopic(id, model);
+            var serviceModel = new CourseAddTopicServiceModel()
+            {
+                Description = model.Description,
+                Name = model.Name,
+            };
+
+            var topicNameUnused = courses.AddTopic(id, serviceModel);
 
             if (!topicNameUnused)
             {
@@ -65,7 +71,16 @@ namespace KnowledgeHub.Controllers
                 return View(model);
             }
 
-            courses.Create(model);
+            var serviceModel = new CourseCreateServiceModel()
+            {
+                Categories = model.Categories,
+                Category = model.Category,
+                Description = model.Description,
+                ImageUrl = model.ImageUrl,
+                Name = model.Name,
+            };
+
+            courses.Create(serviceModel);
             return Redirect("/Course/All");
         }
 

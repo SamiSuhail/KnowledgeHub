@@ -1,19 +1,17 @@
-﻿using KnowledgeHub.Models.Courses;
-using KnowledgeHub.Models.Topics;
+﻿using KnowledgeHub.Services.Courses.Models;
 using System.Collections.Generic;
 
 namespace KnowledgeHub.Services.Courses
 {
     public interface ICourseService
     {
-        public IEnumerable<CategoryDisplayModel> AllCategories();
-        public IEnumerable<CourseAllDisplayModel> AllCourses(string category);
-        public IEnumerable<TopicDisplayModel> AllTopics(string courseId);
+        public IEnumerable<CategoryServiceModel> AllCategories();
+        public IEnumerable<CourseAllServiceModel> AllCourses(string category);
+        public IEnumerable<TopicServiceModel> AllTopics(string courseId);
 
-        public bool AddTopic(int courseId, CourseAddTopicFormModel model);
-        public void Create(CourseCreateFormModel model);
-        public CourseDetailsDisplayModel Details(int id);
-        public void SeedCategories();
+        public bool AddTopic(int courseId, CourseAddTopicServiceModel model);
+        public void Create(CourseCreateServiceModel model);
+        public CourseDetailsServiceModel Details(int id);
 
 
     }

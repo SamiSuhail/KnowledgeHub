@@ -1,7 +1,6 @@
 ﻿using KnowledgeHub.Data;
 using KnowledgeHub.Data.Models;
-using KnowledgeHub.Models.Courses;
-using KnowledgeHub.Models.Topics;
+using KnowledgeHub.Services.Courses.Models;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,9 +13,9 @@ namespace KnowledgeHub.Services.Courses
         {
             this.data = data;
         }
-        public IEnumerable<CategoryDisplayModel> AllCategories()
+        public IEnumerable<CategoryServiceModel> AllCategories()
             => data.Categories
-            .Select(c => new CategoryDisplayModel()
+            .Select(c => new CategoryServiceModel()
             {
                 Name = c.Name,
                 Description = c.Description
@@ -27,12 +26,12 @@ namespace KnowledgeHub.Services.Courses
             => data.Categories.FirstOrDefault(c => c.Id == id).Name;
 
 
-        public IEnumerable<CourseAllDisplayModel> AllCourses(string category)
+        public IEnumerable<CourseAllServiceModel> AllCourses(string category)
         {
             if (category == null)
             {
                 return data.Courses
-              .Select(c => new CourseAllDisplayModel()
+              .Select(c => new CourseAllServiceModel()
               {
                   Id = c.Id,
                   Category = c.Category.Name,
@@ -46,7 +45,7 @@ namespace KnowledgeHub.Services.Courses
 
             return data.Courses
               .Where(c => c.Category.Name == category)
-              .Select(c => new CourseAllDisplayModel()
+              .Select(c => new CourseAllServiceModel()
               {
                   Id = c.Id,
                   Category = c.Category.Name,
@@ -58,9 +57,9 @@ namespace KnowledgeHub.Services.Courses
               .ToList();
         }
 
-        public IEnumerable<TopicDisplayModel> AllTopics(string courseId)
+        public IEnumerable<TopicServiceModel> AllTopics(string courseId)
             => data.Topics.Where(t => t.CourseId.ToString() == courseId)
-            .Select(t => new TopicDisplayModel()
+            .Select(t => new TopicServiceModel()
             {
                 Id = t.Id,
                 CourseId = t.CourseId,
@@ -68,7 +67,7 @@ namespace KnowledgeHub.Services.Courses
             });
 
         
-        public bool AddTopic(int courseId, CourseAddTopicFormModel model)
+        public bool AddTopic(int courseId, CourseAddTopicServiceModel model)
         {
             if (data.Topics.Where(t => t.CourseId == courseId).Any(t => t.Name == model.Name))
             {
@@ -85,7 +84,7 @@ namespace KnowledgeHub.Services.Courses
             data.SaveChanges();
             return true;
         }
-        public void Create(CourseCreateFormModel model)
+        public void Create(CourseCreateServiceModel model)
         {
             var category = AllCategories().FirstOrDefault(c => c.Name == model.Category);
 
@@ -106,18 +105,18 @@ namespace KnowledgeHub.Services.Courses
             data.SaveChanges();
         }
 
-        public CourseDetailsDisplayModel Details(int id)
+        public CourseDetailsServiceModel Details(int id)
         {
             var course = data.Courses.FirstOrDefault(c => c.Id == id);
             var topics = data.Topics.Where(t => t.CourseId == id)
-                    .Select(t => new TopicDisplayModel()
+                    .Select(t => new TopicServiceModel()
                     {
                         CourseId = t.CourseId,
                         Id = t.Id,
                         Name = t.Name,
                     });
 
-            return new CourseDetailsDisplayModel()
+            return new CourseDetailsServiceModel()
             {
                 Category = GetCategoryName(course.CategoryId),
                 CreatedOn = course.CreatedOn,
@@ -131,27 +130,10 @@ namespace KnowledgeHub.Services.Courses
         }
 
 
-        public void SeedCategories()
-        {
-            if (data.Categories.Any())
-            {
-                return;
-            }
-
-            var seedCategories = new List<Category>()
-            {
-                new Category() {Name = "IT", Description = "Operating Systems, Networking, Programming"},
-                new Category() {Name = "Art", Description = "Painting, Cinema, Music"},
-                new Category() {Name = "Science", Description = "Maths, Biology, Physics, Chemistry"},
-                new Category() {Name = "General Knowledge", Description = "History, Geography, Politics"},
-            };
-
-            data.Categories.AddRange(seedCategories);
-            data.SaveChanges();
-        }
+        
 
 
-        private Category ToCategory(CategoryDisplayModel model)
+        private Category ToCategory(CategoryServiceModel model)
                 => data.Categories.FirstOrDefault(c => c.Name == model.Name);
 
 

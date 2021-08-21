@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using KnowledgeHub.Services.Courses.Models;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace KnowledgeHub.Models.Courses
@@ -19,6 +20,6 @@ namespace KnowledgeHub.Models.Courses
         public string Category { get; set; }
         public string ImageUrl { get; set; }
 
-        public IEnumerable<CategoryDisplayModel> Categories {get;set;}
+        public IEnumerable<CategoryServiceModel> Categories {get;set;}
     }
 }

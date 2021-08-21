@@ -1,6 +1,5 @@
-﻿using KnowledgeHub.Models.Videos;
-using KnowledgeHub.Services.Courses;
-using KnowledgeHub.Services.Courses.Models;
+﻿using AutoMapper;
+using KnowledgeHub.Models.Videos;
 using KnowledgeHub.Services.Videos;
 using KnowledgeHub.Services.Videos.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +9,11 @@ namespace KnowledgeHub.Controllers
     public class VideoController : Controller
     {
         private IVideoService videos;
-        private ICourseService courses;
-        public VideoController(IVideoService videos, ICourseService courses)
+        private readonly IMapper mapper;
+        public VideoController(IVideoService videos, IMapper mapper)
         {
             this.videos = videos;
-            this.courses = courses;
+            this.mapper = mapper;
         }
 
         public IActionResult All(string courseId, string topicId = null)
@@ -32,13 +31,7 @@ namespace KnowledgeHub.Controllers
                 return View(model);
             }
 
-
-            var serviceModel = new VideoAddServiceModel()
-            {
-                Name = model.Name,
-                Topic = model.Topic,
-                URL = model.URL,
-            };
+            var serviceModel = mapper.Map<VideoAddFormModel, VideoAddServiceModel>(model);
 
             var videoNameUnused = videos.Add(courseId, serviceModel);
 

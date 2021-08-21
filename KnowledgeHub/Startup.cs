@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+
 namespace KnowledgeHub
 {
     public class Startup
@@ -38,6 +39,8 @@ namespace KnowledgeHub
                     options.Password.RequireUppercase = false;
                 })
                 .AddEntityFrameworkStores<KnowledgeHubDbContext>();
+
+            services.AddAutoMapper(typeof(Startup));
 
             services
                 .AddControllersWithViews();

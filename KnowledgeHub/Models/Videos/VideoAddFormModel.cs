@@ -13,9 +13,9 @@ namespace KnowledgeHub.Models.Videos
         public string Name { get; set; }
 
         [Required]
-        public string URL { get; set; }
+        public string Url { get; set; }
 
-        public string Topic { get; set; }
+        public string TopicId { get; set; }
         public IEnumerable<TopicServiceModel> Topics { get; set; }
 
     }

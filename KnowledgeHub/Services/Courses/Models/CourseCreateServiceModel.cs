@@ -8,9 +8,7 @@ namespace KnowledgeHub.Services.Courses.Models
 
         public string Description { get; set; }
 
-        public string Category { get; set; }
+        public int CategoryId { get; set; }
         public string ImageUrl { get; set; }
-
-        public IEnumerable<CategoryServiceModel> Categories { get; set; }
     }
 }

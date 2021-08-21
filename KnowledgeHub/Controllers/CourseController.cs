@@ -1,4 +1,5 @@
-﻿using KnowledgeHub.Models.Courses;
+﻿using AutoMapper;
+using KnowledgeHub.Models.Courses;
 using KnowledgeHub.Services.Courses;
 using KnowledgeHub.Services.Courses.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -8,9 +9,11 @@ namespace KnowledgeHub.Controllers
     public class CourseController : Controller
     {
         private ICourseService courses;
-        public CourseController(ICourseService courses)
+        private readonly IMapper mapper;
+        public CourseController(ICourseService courses, IMapper mapper)
         {
             this.courses = courses;
+            this.mapper = mapper;
         }
         public IActionResult Index()
         {
@@ -44,11 +47,7 @@ namespace KnowledgeHub.Controllers
                 return View(model);
             }
 
-            var serviceModel = new CourseAddTopicServiceModel()
-            {
-                Description = model.Description,
-                Name = model.Name,
-            };
+            var serviceModel = mapper.Map<CourseAddTopicServiceModel>(model);
 
             var topicNameUnused = courses.AddTopic(id, serviceModel);
 
@@ -71,14 +70,7 @@ namespace KnowledgeHub.Controllers
                 return View(model);
             }
 
-            var serviceModel = new CourseCreateServiceModel()
-            {
-                Categories = model.Categories,
-                Category = model.Category,
-                Description = model.Description,
-                ImageUrl = model.ImageUrl,
-                Name = model.Name,
-            };
+            var serviceModel = mapper.Map<CourseCreateServiceModel>(model);
 
             courses.Create(serviceModel);
             return Redirect("/Course/All");

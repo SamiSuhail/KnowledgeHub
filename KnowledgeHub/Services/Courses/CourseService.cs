@@ -1,6 +1,9 @@
-﻿using KnowledgeHub.Data;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using KnowledgeHub.Data;
 using KnowledgeHub.Data.Models;
 using KnowledgeHub.Services.Courses.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,17 +12,18 @@ namespace KnowledgeHub.Services.Courses
     public class CourseService : ICourseService
     {
         private KnowledgeHubDbContext data;
-        public CourseService(KnowledgeHubDbContext data)
+        private readonly IMapper mapper;
+        private readonly IConfigurationProvider queryableMapper;
+
+        public CourseService(KnowledgeHubDbContext data, IMapper mapper)
         {
             this.data = data;
+            this.mapper = mapper;
+            this.queryableMapper = mapper.ConfigurationProvider;
         }
         public IEnumerable<CategoryServiceModel> AllCategories()
             => data.Categories
-            .Select(c => new CategoryServiceModel()
-            {
-                Name = c.Name,
-                Description = c.Description
-            })
+            .ProjectTo<CategoryServiceModel>(queryableMapper)
             .ToList();
 
         private string GetCategoryName(int id)
@@ -31,40 +35,19 @@ namespace KnowledgeHub.Services.Courses
             if (category == null)
             {
                 return data.Courses
-              .Select(c => new CourseAllServiceModel()
-              {
-                  Id = c.Id,
-                  Category = c.Category.Name,
-                  Description = c.Description,
-                  CreatedOn = c.CreatedOn,
-                  Name = c.Name,
-                  ImageUrl = c.ImageUrl
-              })
+              .ProjectTo<CourseAllServiceModel>(queryableMapper)
               .ToList();
             }
 
             return data.Courses
               .Where(c => c.Category.Name == category)
-              .Select(c => new CourseAllServiceModel()
-              {
-                  Id = c.Id,
-                  Category = c.Category.Name,
-                  Description = c.Description,
-                  CreatedOn = c.CreatedOn,
-                  Name = c.Name,
-                  ImageUrl = c.ImageUrl
-              })
+              .ProjectTo<CourseAllServiceModel>(queryableMapper)
               .ToList();
         }
 
         public IEnumerable<TopicServiceModel> AllTopics(string courseId)
             => data.Topics.Where(t => t.CourseId.ToString() == courseId)
-            .Select(t => new TopicServiceModel()
-            {
-                Id = t.Id,
-                CourseId = t.CourseId,
-                Name = t.Name,
-            });
+            .ProjectTo<TopicServiceModel>(queryableMapper);
 
         
         public bool AddTopic(int courseId, CourseAddTopicServiceModel model)
@@ -74,27 +57,19 @@ namespace KnowledgeHub.Services.Courses
                 return false;
             }
 
-            data.Topics.Add(new Topic()
-            {
-                CourseId = courseId,
-                Description = model.Description,
-                Name = model.Name,
-            });
+            var topic = mapper.Map<CourseAddTopicServiceModel, Topic>(model);
+            topic.CourseId = courseId;
+
+            data.Topics.Add(topic);
 
             data.SaveChanges();
             return true;
         }
         public void Create(CourseCreateServiceModel model)
         {
-            var category = AllCategories().FirstOrDefault(c => c.Name == model.Category);
 
-            var newCourse = new Course()
-            {
-                Name = model.Name,
-                Description = model.Description,
-                Category = ToCategory(category),
-                ImageUrl = model.ImageUrl,
-            };
+            var newCourse = mapper.Map<CourseCreateServiceModel, Course>(model);
+
 
             if (model.ImageUrl == null)
             {
@@ -107,31 +82,16 @@ namespace KnowledgeHub.Services.Courses
 
         public CourseDetailsServiceModel Details(int id)
         {
-            var course = data.Courses.FirstOrDefault(c => c.Id == id);
+            var course = data.Courses.Include(c => c.Category).FirstOrDefault(c => c.Id == id);
+            course.Category.Name = GetCategoryName(course.CategoryId);
             var topics = data.Topics.Where(t => t.CourseId == id)
-                    .Select(t => new TopicServiceModel()
-                    {
-                        CourseId = t.CourseId,
-                        Id = t.Id,
-                        Name = t.Name,
-                    });
+                    .ProjectTo<TopicServiceModel>(queryableMapper);
 
-            return new CourseDetailsServiceModel()
-            {
-                Category = GetCategoryName(course.CategoryId),
-                CreatedOn = course.CreatedOn,
-                Description = course.Description,
-                Id = course.Id,
-                ImageUrl = course.ImageUrl,
-                LastModified = course.LastModified,
-                Name = course.Name,
-                Topics = topics
-            };
+            var serviceModel = mapper.Map<Course, CourseDetailsServiceModel>(course);
+            serviceModel.Topics = topics;
+
+            return serviceModel;
         }
-
-
-        
-
 
         private Category ToCategory(CategoryServiceModel model)
                 => data.Categories.FirstOrDefault(c => c.Name == model.Name);

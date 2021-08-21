@@ -29,11 +29,22 @@ namespace KnowledgeHub.Controllers
         //    return View(allCourses);
         //}
 
-        public IActionResult All(string category)
+        public IActionResult All([FromQuery] CourseAllQueryModel query)
         {
-            var allCourses = courses.AllCourses(category);
+            var queryResult = courses.AllCourses(
+                query.Category,
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                CourseAllQueryModel.CoursesPerPage);
 
-            return View(allCourses);
+            var courseCategories = courses.AllCategoriesStrings();
+
+            query.Categories = courseCategories;
+            query.TotalCourses = queryResult.TotalCourses;
+            query.Courses = queryResult.Courses;
+
+            return View(query);
         }
 
         public IActionResult AddTopic(int id)

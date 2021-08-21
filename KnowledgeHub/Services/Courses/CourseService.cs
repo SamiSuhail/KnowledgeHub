@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using KnowledgeHub.Data;
 using KnowledgeHub.Data.Models;
+using KnowledgeHub.Models.Courses;
 using KnowledgeHub.Services.Courses.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -26,23 +27,53 @@ namespace KnowledgeHub.Services.Courses
             .ProjectTo<CategoryServiceModel>(queryableMapper)
             .ToList();
 
+        public IEnumerable<string> AllCategoriesStrings()
+            => data.Categories
+            .Select(c => c.Name)
+            .ToList();
+
         private string GetCategoryName(int id)
             => data.Categories.FirstOrDefault(c => c.Id == id).Name;
 
 
-        public IEnumerable<CourseAllServiceModel> AllCourses(string category)
+        public CourseAllQueryServiceModel AllCourses(
+            string category = null,
+            string searchTerm = null,
+            CourseSorting sorting = CourseSorting.CreatedOn,
+            int currentPage = 1,
+            int coursesPerPage = int.MaxValue)
         {
-            if (category == null)
+            var coursesQuery = this.data.Courses.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(category))
             {
-                return data.Courses
-              .ProjectTo<CourseAllServiceModel>(queryableMapper)
-              .ToList();
+                coursesQuery = coursesQuery.Where(c => c.Category.Name == category);
             }
 
-            return data.Courses
-              .Where(c => c.Category.Name == category)
-              .ProjectTo<CourseAllServiceModel>(queryableMapper)
-              .ToList();
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                coursesQuery = coursesQuery.Where(c =>
+                    (c.Name).ToLower().Contains(searchTerm.ToLower()) ||
+                    c.Description.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            coursesQuery = sorting switch
+            {
+                CourseSorting.Name => coursesQuery.OrderByDescending(c => c.Name),
+                CourseSorting.CreatedOn or _ => coursesQuery.OrderByDescending(c => c.Id)
+            };
+
+            var totalCourses = coursesQuery.Count();
+
+            var courses = GetCourses(coursesQuery);
+
+            return new CourseAllQueryServiceModel
+            {
+                TotalCourses = totalCourses,
+                CurrentPage = currentPage,
+                CoursesPerPage = coursesPerPage,
+                Courses = courses
+            };
         }
 
         public IEnumerable<TopicServiceModel> AllTopics(string courseId)
@@ -96,6 +127,9 @@ namespace KnowledgeHub.Services.Courses
         private Category ToCategory(CategoryServiceModel model)
                 => data.Categories.FirstOrDefault(c => c.Name == model.Name);
 
-
+        private IEnumerable<CourseAllServiceModel> GetCourses(IQueryable<Course> courseQuery)
+            => courseQuery
+                    .ProjectTo<CourseAllServiceModel>(queryableMapper)
+                    .ToList();
     }
 }

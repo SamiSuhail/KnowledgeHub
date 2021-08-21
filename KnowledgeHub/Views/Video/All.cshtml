@@ -1,7 +1,7 @@
 ﻿@model VideoAllServiceModel
 
 @{ 
-    ViewBag.CurrentCourse = Model.Topics.FirstOrDefault().CourseId;
+    ViewBag.CurrentCourseId = Model.Topics.FirstOrDefault().CourseId;
 }
 
 <div class="card text-center">
@@ -10,17 +10,19 @@
             @foreach (var topic in Model.Topics)
             {
                 <li class="nav-item">
-                    <a asp-area="" asp-controller="Video" asp-action="All" asp-route-courseId="@ViewBag.CurrentCourse" asp-route-topicId="@topic.Id" class="nav-link active">@topic.Name</a>
+                    <a asp-area="" asp-controller="Video" asp-action="All" asp-route-courseId="@ViewBag.CurrentCourseId" asp-route-topicId="@topic.Id" class="nav-link active">@topic.Name</a>
                 </li>
             }
         </ul>
     </div>
     <div class="card-body">
-        <a asp-area="" asp-controller="Video" asp-action="All" asp-route-courseId="@ViewBag.CurrentCourse" class="btn btn-primary">All Videos</a>
+        <a asp-area="" asp-controller="Video" asp-action="All" asp-route-courseId="@ViewBag.CurrentCourseId" class="btn btn-primary">All Videos</a>
 
-        <a asp-area="" asp-controller="Course" asp-action="Details" asp-route-id="@ViewBag.CurrentCourse" class="btn btn-primary">Go back to course details.</a>
+        <a asp-area="" asp-controller="Course" asp-action="Details" asp-route-id="@ViewBag.CurrentCourseId" class="btn btn-primary">Go back to course details.</a>
+       
+        <a asp-area="" asp-controller="Course" asp-action="AddTopic" asp-route-courseId="@ViewBag.CurrentCourseId" class="btn btn-success">Add Topic</a>
 
-        <a asp-area="" asp-controller="Video" asp-action="Add" asp-route-courseId="@ViewBag.CurrentCourse" class="btn btn-success">Add Video</a>
+        <a asp-area="" asp-controller="Video" asp-action="Add" asp-route-courseId="@ViewBag.CurrentCourseId" class="btn btn-success">Add Video</a>
     </div>
 </div>
 

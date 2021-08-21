@@ -36,8 +36,7 @@ namespace KnowledgeHub.Controllers
             var serviceModel = new VideoAddServiceModel()
             {
                 Name = model.Name,
-                Topic = model.Name,
-                Topics = model.Topics,
+                Topic = model.Topic,
                 URL = model.URL,
             };
 

@@ -2,16 +2,41 @@
 {
     public static class DataConstants
     {
-        public const int VideoNameMinLength = 5;
-        public const int VideoNameMaxLength = 30;
-        public const int VideoDescriptionMinLength = 20;
+        public class Video
+        {
+            public const int NameMinLength = 5;
+            public const int NameMaxLength = 30;
+            public const int DescriptionMinLength = 20;
+        }
 
-        public const int CourseNameMinLength = 5;
-        public const int CourseNameMaxLength = 30;
-        public const int CourseDescriptionMinLength = 30;
+        public class Course
+        {
+            public const int NameMinLength = 5;
+            public const int NameMaxLength = 30;
+            public const int DescriptionMinLength = 30;
+        }
 
-        public const int TopicNameMinLength = 1;
-        public const int TopicNameMaxLength = 20;
+        public class Topic
+        {
+            public const int NameMinLength = 1;
+            public const int NameMaxLength = 20;
+        }
+
+        public class Lector
+        {
+            public const int NameMinLength = 2;
+            public const int NameMaxLength = 25;
+            public const int PhoneNumberMinLength = 6;
+            public const int PhoneNumberMaxLength = 30;
+        }
+
+        public class User
+        {
+            public const int FullNameMinLength = 5;
+            public const int FullNameMaxLength = 40;
+            public const int PasswordMinLength = 6;
+            public const int PasswordMaxLength = 100;
+        }
     }
 
 }

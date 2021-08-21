@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-using static KnowledgeHub.Data.DataConstants;
+using static KnowledgeHub.Data.DataConstants.Video;
 
 namespace KnowledgeHub.Data.Models
 {
@@ -10,7 +10,7 @@ namespace KnowledgeHub.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(VideoNameMaxLength)]
+        [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
         [Required]

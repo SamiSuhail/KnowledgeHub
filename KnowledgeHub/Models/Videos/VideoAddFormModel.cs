@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-using static KnowledgeHub.Data.DataConstants;
+using static KnowledgeHub.Data.DataConstants.Video;
 
 namespace KnowledgeHub.Models.Videos
 {
     public class VideoAddFormModel
     {
         [Required]
-        [MaxLength(VideoNameMaxLength)]
+        [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
         [Required]

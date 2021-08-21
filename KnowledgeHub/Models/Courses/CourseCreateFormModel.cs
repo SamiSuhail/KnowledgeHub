@@ -4,16 +4,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace KnowledgeHub.Models.Courses
 {
-    using static Data.DataConstants;
+    using static Data.DataConstants.Course;
     public class CourseCreateFormModel
     {
         [Required]
-        [MaxLength(CourseNameMaxLength)]
-        [MinLength(CourseNameMinLength)]
+        [MaxLength(NameMaxLength)]
+        [MinLength(NameMinLength)]
         public string Name { get; set; }
 
         [Required]
-        [MinLength(CourseDescriptionMinLength)]
+        [MinLength(DescriptionMinLength)]
         public string Description { get; set; }
 
         [Required]

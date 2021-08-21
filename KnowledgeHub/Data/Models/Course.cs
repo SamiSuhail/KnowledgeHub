@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-using static KnowledgeHub.Data.DataConstants;
+using static KnowledgeHub.Data.DataConstants.Course;
 
 namespace KnowledgeHub.Data.Models
 {
@@ -12,7 +12,7 @@ namespace KnowledgeHub.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(CourseNameMaxLength)]
+        [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
         [Required]
@@ -24,5 +24,8 @@ namespace KnowledgeHub.Data.Models
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
         public DateTime? LastModified { get; set; }
         public IEnumerable<Topic> Topics { get; set; } = new List<Topic>();
+
+        public int LectorId { get; set; }
+        public Lector Lector { get; set; }
     }
 }

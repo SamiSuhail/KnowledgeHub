@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
+using static KnowledgeHub.WebConstants;
+
 namespace KnowledgeHub.Services.Courses
 {
     public class CourseService : ICourseService
@@ -67,6 +69,11 @@ namespace KnowledgeHub.Services.Courses
 
             var courses = GetCourses(coursesQuery);
 
+            foreach (var course in courses)
+            {
+                course.UserId = UserId(course.Id);
+            }
+
             return new CourseAllQueryServiceModel
             {
                 TotalCourses = totalCourses,
@@ -104,19 +111,30 @@ namespace KnowledgeHub.Services.Courses
 
             if (model.ImageUrl == null)
             {
-                newCourse.ImageUrl = @"https://elearningindustry.com/wp-content/uploads/2020/01/designing-effective-elearning-courses.jpg";
+                newCourse.ImageUrl = DefaultCourseImageUrl;
             }
 
             data.Courses.Add(newCourse);
             data.SaveChanges();
         }
 
+        public void Delete(int id)
+        {
+            var course = this.data.Courses.FirstOrDefault(c => c.Id == id);
+
+            this.data.Courses.Remove(course);
+            this.data.SaveChanges();
+        }
         public CourseDetailsServiceModel Details(int id)
         {
-            var course = data.Courses.Include(c => c.Category).FirstOrDefault(c => c.Id == id);
-            course.Category.Name = GetCategoryName(course.CategoryId);
-            var topics = data.Topics.Where(t => t.CourseId == id)
-                    .ProjectTo<TopicServiceModel>(queryableMapper);
+            var course = data.Courses
+                .Include(c => c.Category)
+                .FirstOrDefault(c => c.Id == id);
+
+            var topics = data.Topics
+                .Where(t => t.CourseId == id)
+                .ProjectTo<TopicServiceModel>(queryableMapper)
+                .ToList();
 
             var serviceModel = mapper.Map<Course, CourseDetailsServiceModel>(course);
             serviceModel.Topics = topics;
@@ -124,8 +142,26 @@ namespace KnowledgeHub.Services.Courses
             return serviceModel;
         }
 
-        private Category ToCategory(CategoryServiceModel model)
-                => data.Categories.FirstOrDefault(c => c.Name == model.Name);
+        public CourseCreateServiceModel DetailsForEdit(int id)
+        {
+            var course = data.Courses
+                .Include(c => c.Category)
+                .FirstOrDefault(c => c.Id == id);
+
+            return mapper.Map<Course, CourseCreateServiceModel>(course);
+        }
+
+        public void Edit(int id, string name, int categoryId, string description, string imageUrl)
+        {
+            var course = this.data.Courses.FirstOrDefault(c => c.Id == id);
+
+            course.Name = name;
+            course.CategoryId = categoryId;
+            course.Description = description;
+            course.ImageUrl = imageUrl == null ? DefaultCourseImageUrl : imageUrl;
+
+            this.data.SaveChanges();
+        }
 
         private IEnumerable<CourseAllServiceModel> GetCourses(IQueryable<Course> courseQuery)
             => courseQuery

@@ -25,7 +25,9 @@ namespace KnowledgeHub.Infrastructure
 
             this.CreateMap<CourseAddTopicFormModel, CourseAddTopicServiceModel>();
             this.CreateMap<CourseCreateFormModel, CourseCreateServiceModel>();
+            this.CreateMap<CourseCreateServiceModel, CourseCreateFormModel>();
             this.CreateMap<CourseCreateServiceModel, Course>();
+            this.CreateMap<Course, CourseCreateServiceModel>();
             this.CreateMap<Course, CourseAllServiceModel>();
             this.CreateMap<Course, CourseDetailsServiceModel>();
 

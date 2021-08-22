@@ -24,6 +24,8 @@
     @if (ViewBag.UserIsAuthorized)
     {
         <a asp-area="" asp-controller="Course" asp-action="AddTopic" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">Add topic</a>
+        <a asp-controller="Course" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+        <a asp-controller="Course" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
     }
 </div>
 

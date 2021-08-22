@@ -8,6 +8,8 @@ using KnowledgeHub.Services.Students;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using static KnowledgeHub.WebConstants;
+
 namespace KnowledgeHub.Controllers
 {
     public class CourseController : Controller
@@ -40,12 +42,15 @@ namespace KnowledgeHub.Controllers
 
         public IActionResult All([FromQuery] CourseAllQueryModel query)
         {
+            ViewBag.UserId = this.User.Id();
+
             var queryResult = courses.AllCourses(
                 query.Category,
                 query.SearchTerm,
                 query.Sorting,
                 query.CurrentPage,
                 CourseAllQueryModel.CoursesPerPage);
+
 
             var courseCategories = courses.AllCategoriesStrings();
 
@@ -135,6 +140,83 @@ namespace KnowledgeHub.Controllers
             ViewBag.UserIsLector = lectors.IsLector(userId);
 
             return View(course);
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var userId = this.User.Id();
+
+            if (!this.lectors.IsLector(userId))
+            {
+                return RedirectToAction(nameof(LectorController.Become), "Lector");
+            }
+
+            if (this.courses.UserId(id) != userId)
+            {
+                return Unauthorized();
+            }
+
+            this.courses.Delete(id);
+
+            return RedirectToAction(nameof(CourseController.All), "Course");
+        }
+
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var userId = this.User.Id();
+
+            if (!this.lectors.IsLector(userId))
+            {
+                return RedirectToAction(nameof(LectorController.Become), "Lector");
+            }
+
+            //CourseCreateFormModel
+            var course = mapper.Map<CourseCreateFormModel>(this.courses.DetailsForEdit(id));
+            
+
+            if (this.courses.UserId(id) != userId)
+            {
+                return Unauthorized();
+            }
+
+            course.Categories = this.courses.AllCategories();
+
+            if (course.ImageUrl == DefaultCourseImageUrl)
+            {
+                course.ImageUrl = "";
+            }
+
+            return View(course);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(int id, CourseCreateFormModel model)
+        {
+            var userId = this.User.Id();
+            var lectorId = this.lectors.GetId(userId);
+
+            if (lectorId == 0)
+            {
+                return RedirectToAction(nameof(LectorController.Become), "Lector");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                model.Categories = this.courses.AllCategories();
+
+                return View(model);
+            }
+
+            if (this.courses.UserId(id) != userId)
+            {
+                return BadRequest();
+            }
+
+            this.courses.Edit(id, model.Name, model.CategoryId, model.Description, model.ImageUrl);
+
+            return RedirectToAction(nameof(Details), new { Id = id});
         }
     }
 }

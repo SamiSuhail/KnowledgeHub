@@ -9,11 +9,10 @@ namespace KnowledgeHub.Models.Courses
 {
     public class CourseAllQueryModel
     {
-        public const int CoursesPerPage = 9;
+        public const int CoursesPerPage = 3;
 
         public string Category { get; init; }
 
-        [Display(Name = "Search by text")]
         public string SearchTerm { get; init; }
 
         public CourseSorting Sorting { get; init; }

@@ -25,7 +25,7 @@ namespace KnowledgeHub.Data
                 .HasMany(c => c.Topics)
                 .WithOne(v => v.Course)
                 .HasForeignKey(cv => cv.CourseId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Course>()
                 .HasOne(c => c.Category)
@@ -37,19 +37,19 @@ namespace KnowledgeHub.Data
                 .HasMany(t => t.Videos)
                 .WithOne(v => v.Topic)
                 .HasForeignKey(v => v.TopicId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Lector>()
                 .HasMany(l => l.Courses)
                 .WithOne(c => c.Lector)
                 .HasForeignKey(c => c.LectorId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Lector>()
                 .HasOne<User>()
                 .WithOne()
                 .HasForeignKey<Lector>(l => l.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<StudentsVideos>()
                 .HasKey(sv => new { sv.StudentId, sv.VideoId });
@@ -58,7 +58,7 @@ namespace KnowledgeHub.Data
                 .HasMany(s => s.VideosWatched)
                 .WithOne(sv => sv.Student)
                 .HasForeignKey(sv => sv.StudentId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Video>()
                 .HasMany(v => v.Views)
@@ -70,7 +70,7 @@ namespace KnowledgeHub.Data
                 .HasOne<User>()
                 .WithOne()
                 .HasForeignKey<Student>(s => s.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(builder);
         }

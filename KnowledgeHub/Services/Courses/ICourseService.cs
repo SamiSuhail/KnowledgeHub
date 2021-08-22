@@ -18,7 +18,10 @@ namespace KnowledgeHub.Services.Courses
 
         public bool AddTopic(int courseId, CourseAddTopicServiceModel model);
         public void Create(CourseCreateServiceModel model);
+        public void Delete(int id);
         public CourseDetailsServiceModel Details(int id);
+        public CourseCreateServiceModel DetailsForEdit(int id);
+        public void Edit(int id, string name, int categoryId, string description, string imageUrl);
         public string UserId(int courseId);
     }
 }

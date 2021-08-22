@@ -4,6 +4,7 @@ using KnowledgeHub.Models.Courses;
 using KnowledgeHub.Services.Courses;
 using KnowledgeHub.Services.Courses.Models;
 using KnowledgeHub.Services.Lectors;
+using KnowledgeHub.Services.Students;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,15 +15,18 @@ namespace KnowledgeHub.Controllers
         private ICourseService courses;
         private readonly IMapper mapper;
         private ILectorService lectors;
-        public CourseController(ICourseService courses, ILectorService lectors, IMapper mapper)
+        private IStudentService students;
+        public CourseController(ICourseService courses, ILectorService lectors, IStudentService students, IMapper mapper)
         {
             this.courses = courses;
             this.mapper = mapper;
             this.lectors = lectors;
+            this.students = students;
         }
         public IActionResult Index()
         {
             var allCategories = courses.AllCategories();
+            ViewBag.UserIsLogged = this.User.IsLogged();
 
             return View(allCategories);
         }
@@ -123,9 +127,12 @@ namespace KnowledgeHub.Controllers
 
         public IActionResult Details(int id)
         {
+            var userId = this.User.Id();
             var course = courses.Details(id);
 
-            ViewBag.UserIsAuthorized = courses.UserId(id) == this.User.Id();
+            ViewBag.UserIsAuthorized = courses.UserId(id) == userId;
+            ViewBag.UserIsStudent = students.IsStudent(userId);
+            ViewBag.UserIsLector = lectors.IsLector(userId);
 
             return View(course);
         }

@@ -5,7 +5,10 @@
     <h3>Welcome to our courses. Please select a category below to browse the corresponding courses.</h3>
 </div>
 
-<a asp-controller="Course" asp-action="Create" class="btn btn-primary btn-block" role="button">Create New Course</a>
+@if (ViewBag.UserIsLogged)
+{
+    <a asp-controller="Course" asp-action="Create" class="btn btn-primary btn-block" role="button">Create New Course</a>
+}
 
 <a asp-area="" asp-controller="Course" asp-action="All" class="display-4 text-dark nav-link">
     <div class="jumbotron jumbotron-fluid">

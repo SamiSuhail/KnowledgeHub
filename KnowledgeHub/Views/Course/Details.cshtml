@@ -27,7 +27,7 @@
     }
 </div>
 
-@if (Model.Topics.Any())
+@if (Model.Topics.Any() && (ViewBag.UserIsStudent || ViewBag.UserIsLector))
 {
     <br />
     <div class="list-group">
@@ -42,7 +42,16 @@
     <a asp-controller="Video" asp-action="All" asp-route-courseId="@Model.Id" class="btn btn-primary btn-lg btn-block">All Videos</a>
     <br />
 }
+else if (!ViewBag.UserIsStudent && !ViewBag.UserIsLector)
+{
+    <h1>You need to be a student or lector to view videos.</h1>
+    <a asp-controller="Student" asp-action="Become" class="btn btn-primary btn-lg btn-block">Become a Student!</a>
+}
+else if (ViewBag.UserIsAuthorized)
+{
+    <h1>No topics currently! Please update the course!</h1>
+}
 else
 {
-    <h1>No topics currently, feel free to add one!</h1>
+    <h1>No topics currently! Wait for Lector to update the course.</h1>
 }

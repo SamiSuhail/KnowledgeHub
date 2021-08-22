@@ -4,7 +4,7 @@
     <div class="row">
         <div class="form-group col-md-4">
             <div class="form-group">
-                <label asp-for="Category"></label>
+                <label asp-for="Category">Category</label>
                 <select asp-for="Category" class="form-control">
                     <option value="">All</option>
 
@@ -18,7 +18,7 @@
 
         <div class="form-group col-md-4">
             <div class="form-group">
-                <label asp-for="Sorting"></label>
+                <label asp-for="Sorting">Sort By</label>
                 <select asp-for="Sorting" class="form-control">
                     <option value="0" selected>Date Created</option>
                     <option value="1">Name</option>
@@ -27,7 +27,7 @@
         </div>
 
         <div class="form-group col-md-4">
-            <label asp-for="SearchTerm"></label>
+            <label asp-for="SearchTerm">Search</label>
             <input asp-for="SearchTerm" class="form-control" placeholder="Maths, Cinema, Programming, etc...">
         </div>
 

@@ -4,7 +4,7 @@ namespace KnowledgeHub.Services.Videos
 {
     public interface IVideoService
     {
-        public VideoAllServiceModel AllVideos(string courseId, string topicId = null);
-        public bool Add(string courseId, VideoAddServiceModel model);
+        public VideoAllServiceModel AllVideos(int courseId, int? topicId = null);
+        public bool Add(int courseId, VideoAddServiceModel model);
     }
 }

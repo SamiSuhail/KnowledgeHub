@@ -19,10 +19,12 @@
         <a asp-area="" asp-controller="Video" asp-action="All" asp-route-courseId="@ViewBag.CurrentCourseId" class="btn btn-primary">All Videos</a>
 
         <a asp-area="" asp-controller="Course" asp-action="Details" asp-route-id="@ViewBag.CurrentCourseId" class="btn btn-primary">Go back to course details.</a>
-       
-        <a asp-area="" asp-controller="Course" asp-action="AddTopic" asp-route-courseId="@ViewBag.CurrentCourseId" class="btn btn-success">Add Topic</a>
+        @if (ViewBag.UserIsAuthorized)
+        {
+            <a asp-area="" asp-controller="Course" asp-action="AddTopic" asp-route-Id="@ViewBag.CurrentCourseId" class="btn btn-success">Add Topic</a>
 
-        <a asp-area="" asp-controller="Video" asp-action="Add" asp-route-courseId="@ViewBag.CurrentCourseId" class="btn btn-success">Add Video</a>
+            <a asp-area="" asp-controller="Video" asp-action="Add" asp-route-courseId="@ViewBag.CurrentCourseId" class="btn btn-success">Add Video</a>
+        }
     </div>
 </div>
 

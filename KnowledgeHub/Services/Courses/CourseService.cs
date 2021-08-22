@@ -131,5 +131,12 @@ namespace KnowledgeHub.Services.Courses
             => courseQuery
                     .ProjectTo<CourseAllServiceModel>(queryableMapper)
                     .ToList();
+
+        public string UserId(int courseId)
+            => this.data.Courses
+                .Where(c => c.Id == courseId)
+                .Include(c => c.Lector)
+                .Select(c => c.Lector.UserId)
+                .FirstOrDefault();
     }
 }

@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using KnowledgeHub.Infrastructure;
 using KnowledgeHub.Models.Videos;
+using KnowledgeHub.Services.Courses;
 using KnowledgeHub.Services.Videos;
 using KnowledgeHub.Services.Videos.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KnowledgeHub.Controllers
@@ -9,22 +12,43 @@ namespace KnowledgeHub.Controllers
     public class VideoController : Controller
     {
         private IVideoService videos;
+        private ICourseService courses;
         private readonly IMapper mapper;
-        public VideoController(IVideoService videos, IMapper mapper)
+        public VideoController(IVideoService videos, ICourseService courses, IMapper mapper)
         {
             this.videos = videos;
+            this.courses = courses;
             this.mapper = mapper;
         }
 
-        public IActionResult All(string courseId, string topicId = null)
-            => View(videos.AllVideos(courseId, topicId));
+        public IActionResult All(int courseId, int? topicId = null)
+        {
+            ViewBag.UserIsAuthorized = courses.UserId(courseId) == this.User.Id();
 
-        public IActionResult Add(string courseId)
-                => View(new VideoAddFormModel() { Topics = videos.AllVideos(courseId).Topics });
+            return View(videos.AllVideos(courseId, topicId));
+        } 
+
+        [Authorize]
+        public IActionResult Add(int courseId)
+        {
+            if (courses.UserId(courseId) != this.User.Id())
+            {
+                return Unauthorized();
+            }
+
+            return View(new VideoAddFormModel() { Topics = videos.AllVideos(courseId).Topics });
+        }
+
 
         [HttpPost]
-        public IActionResult Add(string courseId, VideoAddFormModel model)
+        [Authorize]
+        public IActionResult Add(int courseId, VideoAddFormModel model)
         {
+            if (courses.UserId(courseId) != this.User.Id())
+            {
+                return Unauthorized();
+            }
+
             if (!ModelState.IsValid)
             {
                 model.Topics = videos.AllVideos(courseId).Topics;

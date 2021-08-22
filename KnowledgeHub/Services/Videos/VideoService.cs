@@ -4,6 +4,7 @@ using KnowledgeHub.Data;
 using KnowledgeHub.Data.Models;
 using KnowledgeHub.Services.Courses.Models;
 using KnowledgeHub.Services.Videos.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace KnowledgeHub.Services.Videos
@@ -20,9 +21,9 @@ namespace KnowledgeHub.Services.Videos
             this.queryableMapper = mapper.ConfigurationProvider;
         }
 
-        public bool Add(string courseId, VideoAddServiceModel model)
+        public bool Add(int courseId, VideoAddServiceModel model)
         {
-            var topicId = data.Topics.FirstOrDefault(t => t.Id == model.TopicId && t.CourseId == int.Parse(courseId)).Id;
+            var topicId = data.Topics.FirstOrDefault(t => t.Id == model.TopicId && t.CourseId == courseId).Id;
 
             if (data.Videos.Where(v => v.TopicId == topicId).Any(v => v.Name == model.Name))
             {
@@ -37,16 +38,16 @@ namespace KnowledgeHub.Services.Videos
             return true;
         }
 
-        public VideoAllServiceModel AllVideos(string courseId, string topicId = null)
+        public VideoAllServiceModel AllVideos(int courseId, int? topicId = null)
         {
-            var allTopics = data.Topics.Where(t => t.CourseId == int.Parse(courseId))
+            var allTopics = data.Topics.Where(t => t.CourseId == courseId)
                 .ProjectTo<TopicServiceModel>(queryableMapper)
                 .ToList();
 
             var allVideos = topicId == null
                         ? data.Videos.ProjectTo<VideoServiceModel>(queryableMapper)
                         .ToList()
-                        : data.Videos.Where(v => v.TopicId == int.Parse(topicId))
+                        : data.Videos.Where(v => v.TopicId == topicId)
                         .ProjectTo<VideoServiceModel>(queryableMapper)
                         .ToList();
 

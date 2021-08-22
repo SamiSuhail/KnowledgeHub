@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using KnowledgeHub.Data.Models;
 using KnowledgeHub.Models.Courses;
+using KnowledgeHub.Models.Lectors;
 using KnowledgeHub.Models.Videos;
 using KnowledgeHub.Services.Courses.Models;
+using KnowledgeHub.Services.Lectors.Models;
 using KnowledgeHub.Services.Videos.Models;
 
 namespace KnowledgeHub.Infrastructure
@@ -37,9 +39,10 @@ namespace KnowledgeHub.Infrastructure
                 //.ForMember(c => c.CategoryName, cfg => cfg.MapFrom(c => c.Category.Name));
             this.CreateMap<Course, CourseDetailsServiceModel>();
 
-             this.CreateMap<Category, CategoryServiceModel>();
+            this.CreateMap<Category, CategoryServiceModel>();
 
-
+            this.CreateMap<BecomeLectorFormModel, BecomeLectorServiceModel>();
+            this.CreateMap<BecomeLectorServiceModel, Lector>();
 
 
         }

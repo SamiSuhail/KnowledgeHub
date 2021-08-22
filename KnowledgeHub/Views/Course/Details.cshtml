@@ -1,5 +1,6 @@
 ﻿@model CourseDetailsServiceModel
 
+
 <img src="@Model.ImageUrl" class="rounded mx-auto d-block" alt="Course image">
 
 <h4>Name: @Model.Name</h4>
@@ -19,7 +20,11 @@
 <br />
 <div>
     <a>Please chose one of the below topics, to see the corresponding videos:</a>
-    <a asp-area="" asp-controller="Course" asp-action="AddTopic" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">Add topic</a>
+
+    @if (ViewBag.UserIsAuthorized)
+    {
+        <a asp-area="" asp-controller="Course" asp-action="AddTopic" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">Add topic</a>
+    }
 </div>
 
 @if (Model.Topics.Any())

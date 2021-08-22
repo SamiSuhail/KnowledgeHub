@@ -22,7 +22,7 @@
             public const int NameMaxLength = 20;
         }
 
-        public class Lector
+        public class Person
         {
             public const int NameMinLength = 2;
             public const int NameMaxLength = 25;

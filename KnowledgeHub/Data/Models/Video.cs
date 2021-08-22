@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 using static KnowledgeHub.Data.DataConstants.Video;
@@ -21,5 +22,6 @@ namespace KnowledgeHub.Data.Models
         public int TopicId { get; set; }
         public Topic Topic { get; set; }
 
+        public IEnumerable<StudentsVideos> Views { get; set; }
     }
 }

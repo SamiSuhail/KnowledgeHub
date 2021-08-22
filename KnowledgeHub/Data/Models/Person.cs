@@ -6,17 +6,20 @@ using System.Threading.Tasks;
 
 using static KnowledgeHub.Data.DataConstants.Person;
 
-namespace KnowledgeHub.Models.Lectors
+namespace KnowledgeHub.Data.Models
 {
-    public class BecomeLectorFormModel
+    public abstract class Person
     {
+        public int Id { get; set; }
+
         [Required]
-        [MinLength(NameMinLength)]
+        public string UserId { get; set; }
+
+        [Required]
         [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
         [Required]
-        [MinLength(PhoneNumberMinLength)]
         [MaxLength(PhoneNumberMaxLength)]
         public string PhoneNumber { get; set; }
     }

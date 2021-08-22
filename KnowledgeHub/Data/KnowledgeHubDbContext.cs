@@ -11,6 +11,7 @@ namespace KnowledgeHub.Data
         public DbSet<Topic> Topics { get; init; }
         public DbSet<Category> Categories { get; init; }
         public DbSet<Lector> Lectors { get; init; }
+        public DbSet<Student> Students { get; init; }
 
         public KnowledgeHubDbContext(DbContextOptions<KnowledgeHubDbContext> options)
             : base(options)
@@ -48,6 +49,27 @@ namespace KnowledgeHub.Data
                 .HasOne<User>()
                 .WithOne()
                 .HasForeignKey<Lector>(l => l.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<StudentsVideos>()
+                .HasKey(sv => new { sv.StudentId, sv.VideoId });
+
+            builder.Entity<Student>()
+                .HasMany(s => s.VideosWatched)
+                .WithOne(sv => sv.Student)
+                .HasForeignKey(sv => sv.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Video>()
+                .HasMany(v => v.Views)
+                .WithOne(sv => sv.Video)
+                .HasForeignKey(sv => sv.VideoId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Student>()
+                .HasOne<User>()
+                .WithOne()
+                .HasForeignKey<Student>(s => s.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);

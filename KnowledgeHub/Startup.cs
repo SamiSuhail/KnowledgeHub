@@ -48,7 +48,7 @@ namespace KnowledgeHub
             services
                 .AddControllersWithViews(options =>
                 {
-                    options.Filters.Add<AutoValidateAntiForgeryTokenAttribute>();
+                    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
                 });
 
             services

@@ -43,7 +43,7 @@ namespace KnowledgeHub.Controllers
                 return View(model);
             }
 
-            var serviceModel = mapper.Map<BecomeStudentFormModel, BecomeStudentServiceModel>(model);
+            var serviceModel = this.mapper.Map<BecomeStudentFormModel, BecomeStudentServiceModel>(model);
             serviceModel.UserId = userId;
 
             students.Become(serviceModel);

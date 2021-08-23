@@ -27,24 +27,17 @@ namespace KnowledgeHub.Controllers
         }
         public IActionResult Index()
         {
-            var allCategories = courses.AllCategories();
+            var allCategories = this.courses.AllCategories();
             ViewBag.UserIsLogged = this.User.IsLogged();
 
             return View(allCategories);
         }
 
-        //public IActionResult All()
-        //{
-        //    var allCourses = courses.AllCourses();
-
-        //    return View(allCourses);
-        //}
-
         public IActionResult All([FromQuery] CourseAllQueryModel query)
         {
             ViewBag.UserId = this.User.Id();
 
-            var queryResult = courses.AllCourses(
+            var queryResult = this.courses.AllCourses(
                 query.Category,
                 query.SearchTerm,
                 query.Sorting,
@@ -52,7 +45,7 @@ namespace KnowledgeHub.Controllers
                 CourseAllQueryModel.CoursesPerPage);
 
 
-            var courseCategories = courses.AllCategoriesStrings();
+            var courseCategories = this.courses.AllCategoriesStrings();
 
             query.Categories = courseCategories;
             query.TotalCourses = queryResult.TotalCourses;
@@ -86,9 +79,9 @@ namespace KnowledgeHub.Controllers
                 return View(model);
             }
 
-            var serviceModel = mapper.Map<CourseAddTopicServiceModel>(model);
+            var serviceModel = this.mapper.Map<CourseAddTopicServiceModel>(model);
 
-            var topicNameUnused = courses.AddTopic(id, serviceModel);
+            var topicNameUnused = this.courses.AddTopic(id, serviceModel);
 
             if (!topicNameUnused)
             {
@@ -105,7 +98,7 @@ namespace KnowledgeHub.Controllers
                 return RedirectToAction(nameof(LectorController.Become), "Lector");
             }
 
-            return View(new CourseCreateFormModel() { Categories = courses.AllCategories() }); ;
+            return View(new CourseCreateFormModel() { Categories = this.courses.AllCategories() }); ;
         }
 
         [HttpPost]
@@ -119,12 +112,12 @@ namespace KnowledgeHub.Controllers
 
             if (!ModelState.IsValid)
             {
-                model.Categories = courses.AllCategories();
+                model.Categories = this.courses.AllCategories();
                 return View(model);
             }
 
-            var serviceModel = mapper.Map<CourseCreateServiceModel>(model);
-            serviceModel.LectorId = lectors.GetId(this.User.Id());
+            var serviceModel = this.mapper.Map<CourseCreateServiceModel>(model);
+            serviceModel.LectorId = this.lectors.GetId(this.User.Id());
 
             courses.Create(serviceModel);
             return Redirect("/Course/All");
@@ -133,11 +126,11 @@ namespace KnowledgeHub.Controllers
         public IActionResult Details(int id)
         {
             var userId = this.User.Id();
-            var course = courses.Details(id);
+            var course = this.courses.Details(id);
 
-            ViewBag.UserIsAuthorized = courses.UserId(id) == userId;
-            ViewBag.UserIsStudent = students.IsStudent(userId);
-            ViewBag.UserIsLector = lectors.IsLector(userId);
+            ViewBag.UserIsAuthorized = this.courses.UserId(id) == userId;
+            ViewBag.UserIsStudent = this.students.IsStudent(userId);
+            ViewBag.UserIsLector = this.lectors.IsLector(userId);
 
             return View(course);
         }
@@ -172,7 +165,7 @@ namespace KnowledgeHub.Controllers
             }
 
             //CourseCreateFormModel
-            var course = mapper.Map<CourseCreateFormModel>(this.courses.DetailsForEdit(id));
+            var course = this.mapper.Map<CourseCreateFormModel>(this.courses.DetailsForEdit(id));
             
 
             if (this.courses.UserId(id) != userId)

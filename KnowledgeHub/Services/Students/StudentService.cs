@@ -21,7 +21,7 @@ namespace KnowledgeHub.Services.Students
 
         public void Become(BecomeStudentServiceModel model)
         {
-            var student = mapper.Map<BecomeStudentServiceModel, Student>(model);
+            var student = this.mapper.Map<BecomeStudentServiceModel, Student>(model);
 
             this.data.Students.Add(student);
             this.data.SaveChanges();

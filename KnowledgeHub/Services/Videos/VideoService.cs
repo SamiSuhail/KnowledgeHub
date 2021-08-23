@@ -23,32 +23,32 @@ namespace KnowledgeHub.Services.Videos
 
         public bool Add(int courseId, VideoAddServiceModel model)
         {
-            var topicId = data.Topics.FirstOrDefault(t => t.Id == model.TopicId && t.CourseId == courseId).Id;
+            var topicId = this.data.Topics.FirstOrDefault(t => t.Id == model.TopicId && t.CourseId == courseId).Id;
 
-            if (data.Videos.Where(v => v.TopicId == topicId).Any(v => v.Name == model.Name))
+            if (this.data.Videos.Where(v => v.TopicId == topicId).Any(v => v.Name == model.Name))
             {
                 return false;
             }
 
             var video = mapper.Map<VideoAddServiceModel, Video>(model);
 
-            data.Videos.Add(video);
+            this.data.Videos.Add(video);
 
-            data.SaveChanges();
+            this.data.SaveChanges();
             return true;
         }
 
         public VideoAllServiceModel AllVideos(int courseId, int? topicId = null)
         {
-            var allTopics = data.Topics.Where(t => t.CourseId == courseId)
-                .ProjectTo<TopicServiceModel>(queryableMapper)
+            var allTopics = this.data.Topics.Where(t => t.CourseId == courseId)
+                .ProjectTo<TopicServiceModel>(this.queryableMapper)
                 .ToList();
 
             var allVideos = topicId == null
-                        ? data.Videos.ProjectTo<VideoServiceModel>(queryableMapper)
+                        ? this.data.Videos.ProjectTo<VideoServiceModel>(this.queryableMapper)
                         .ToList()
-                        : data.Videos.Where(v => v.TopicId == topicId)
-                        .ProjectTo<VideoServiceModel>(queryableMapper)
+                        : this.data.Videos.Where(v => v.TopicId == topicId)
+                        .ProjectTo<VideoServiceModel>(this.queryableMapper)
                         .ToList();
 
             return new VideoAllServiceModel()

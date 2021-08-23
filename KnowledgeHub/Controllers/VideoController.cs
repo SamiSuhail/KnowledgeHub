@@ -31,7 +31,7 @@ namespace KnowledgeHub.Controllers
                 return RedirectToAction(nameof(StudentController.Become), "Student");
             }
 
-            ViewBag.UserIsAuthorized = courses.UserId(courseId) == this.User.Id();
+            ViewBag.UserIsAuthorized = this.courses.UserId(courseId) == this.User.Id();
 
             return View(videos.AllVideos(courseId, topicId));
         } 
@@ -59,17 +59,17 @@ namespace KnowledgeHub.Controllers
 
             if (!ModelState.IsValid)
             {
-                model.Topics = videos.AllVideos(courseId).Topics;
+                model.Topics = this.videos.AllVideos(courseId).Topics;
                 return View(model);
             }
 
-            var serviceModel = mapper.Map<VideoAddFormModel, VideoAddServiceModel>(model);
+            var serviceModel = this.mapper.Map<VideoAddFormModel, VideoAddServiceModel>(model);
 
-            var videoNameUnused = videos.Add(courseId, serviceModel);
+            var videoNameUnused = this.videos.Add(courseId, serviceModel);
 
             if (!videoNameUnused)
             {
-                model.Topics = videos.AllVideos(courseId).Topics;
+                model.Topics = this.videos.AllVideos(courseId).Topics;
                 return View(model);
             }
 

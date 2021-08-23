@@ -4,7 +4,6 @@ using KnowledgeHub.Data;
 using KnowledgeHub.Data.Models;
 using KnowledgeHub.Services.Courses.Models;
 using KnowledgeHub.Services.Videos.Models;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace KnowledgeHub.Services.Videos

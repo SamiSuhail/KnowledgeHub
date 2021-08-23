@@ -1,9 +1,4 @@
-﻿using KnowledgeHub.Models.Lectors;
-using KnowledgeHub.Services.Lectors.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using KnowledgeHub.Services.Lectors.Models;
 
 namespace KnowledgeHub.Services.Lectors
 {

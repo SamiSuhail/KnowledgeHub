@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace KnowledgeHub.Services.Students.Models
+﻿namespace KnowledgeHub.Services.Students.Models
 {
     public class BecomeStudentServiceModel
     {

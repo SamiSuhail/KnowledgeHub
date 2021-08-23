@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace KnowledgeHub.Services.Courses.Models
+﻿namespace KnowledgeHub.Services.Courses.Models
 {
     public class CourseCreateServiceModel
     {

@@ -1,7 +1,4 @@
-﻿using KnowledgeHub.Services.Courses.Models;
-using System.Collections.Generic;
-
-namespace KnowledgeHub.Services.Videos.Models
+﻿namespace KnowledgeHub.Services.Videos.Models
 {
     public class VideoAddServiceModel
     {

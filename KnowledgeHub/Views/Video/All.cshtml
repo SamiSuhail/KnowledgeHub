@@ -1,6 +1,8 @@
 ﻿@model VideoAllServiceModel
 
-@{ 
+@{ ViewBag.Title = "Browse Videos"; }
+
+@{
     ViewBag.CurrentCourseId = Model.Topics.FirstOrDefault().CourseId;
 }
 

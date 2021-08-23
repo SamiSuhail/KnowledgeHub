@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace KnowledgeHub.Models.Courses
+﻿namespace KnowledgeHub.Models.Courses
 {
     public enum CourseSorting
     {

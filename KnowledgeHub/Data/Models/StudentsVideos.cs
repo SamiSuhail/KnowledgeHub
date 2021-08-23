@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace KnowledgeHub.Data.Models
+﻿namespace KnowledgeHub.Data.Models
 {
     public class StudentsVideos
     {

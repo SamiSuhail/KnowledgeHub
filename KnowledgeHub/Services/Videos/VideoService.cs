@@ -58,5 +58,10 @@ namespace KnowledgeHub.Services.Videos
                 Videos = allVideos,
             };
         }
+
+        public string GetUrl(int id)
+            => this.data.Videos
+            .FirstOrDefault(v => v.Id == id)
+            .Url;
     }
 }

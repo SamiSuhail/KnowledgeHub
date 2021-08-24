@@ -95,7 +95,7 @@ namespace KnowledgeHub.Controllers
             }
 
             var studentId = students.GetId(this.User.Id());
-            var url = this.videos.AddView(id, studentId);
+            var url = this.videos.GetUrl(id);
 
             return Redirect(url);
         }

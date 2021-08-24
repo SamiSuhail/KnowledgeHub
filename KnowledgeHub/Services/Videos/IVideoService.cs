@@ -6,5 +6,6 @@ namespace KnowledgeHub.Services.Videos
     {
         public VideoAllServiceModel AllVideos(int courseId, int? topicId = null);
         public bool Add(int courseId, VideoAddServiceModel model);
+        public string GetUrl(int id);
     }
 }

@@ -25,13 +25,6 @@ namespace KnowledgeHub.Controllers
             this.lectors = lectors;
             this.students = students;
         }
-        public IActionResult Index()
-        {
-            var allCategories = this.courses.AllCategories();
-            ViewBag.UserIsLogged = this.User.IsLogged();
-
-            return View(allCategories);
-        }
 
         public IActionResult All([FromQuery] CourseAllQueryModel query)
         {

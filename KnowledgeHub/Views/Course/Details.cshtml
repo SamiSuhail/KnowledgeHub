@@ -2,59 +2,64 @@
 
 @{ ViewBag.Title = "Course Details"; }
 
-<img src="@Model.ImageUrl" class="rounded mx-auto d-block" alt="Course image">
 
-<h4>Name: @Model.Name</h4>
-<h4>Category: @Model.CategoryName</h4>
-<h4>Description: @Model.Description</h4>
-<h4>Created On: @Model.CreatedOn</h4>
-<h4>
-    Last Modified: @if (Model.LastModified == null)
+<div style="background-color:white">
+    <img src="@Model.ImageUrl" class="rounded mx-auto d-block" alt="Course image">
+    <h4>Name: @Model.Name</h4>
+    <h4>Category: @Model.CategoryName</h4>
+    <h4>Description: @Model.Description</h4>
+    <h4>Created On: @Model.CreatedOn</h4>
+    <h4>
+        Last Modified: @if (Model.LastModified == null)
+        {
+            @:Never
+        }
+        else
+        {
+            @Model.LastModified
+        }
+    </h4>
+
+    <br />
+    <div>
+        <a>Please chose one of the below topics, to see the corresponding videos:</a>
+
+        @if (ViewBag.UserIsAuthorized)
+        {
+            <a asp-area="" asp-controller="Course" asp-action="AddTopic" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">Add topic</a>
+            <a asp-controller="Course" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+            <a asp-controller="Course" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+        }
+    </div>
+
+    @if (Model.Topics.Any() && (ViewBag.UserIsStudent || ViewBag.UserIsLector))
     {
-        @:Never
+        <br />
+        <div class="list-group">
+            @foreach (var topic in Model.Topics)
+            {
+                <a asp-area="" asp-controller="Video" asp-action="All" asp-route-courseId="@topic.CourseId" asp-route-topicId="@topic.Id" class="list-group-item list-group-item-action active">
+                    @topic.Name
+                </a>
+            }
+        </div>
+        <br />
+        <a asp-controller="Video" asp-action="All" asp-route-courseId="@Model.Id" class="btn btn-primary btn-lg btn-block">All Videos</a>
+        <br />
+    }
+    else if (!ViewBag.UserIsStudent && !ViewBag.UserIsLector)
+    {
+        <h1>You need to be a student or lector to view videos.</h1>
+        <a asp-controller="Student" asp-action="Become" class="btn btn-primary btn-lg btn-block">Become a Student!</a>
+    }
+    else if (ViewBag.UserIsAuthorized)
+    {
+        <h1>No topics currently! Please update the course!</h1>
     }
     else
     {
-        @Model.LastModified
-    }
-</h4>
-<br />
-<div>
-    <a>Please chose one of the below topics, to see the corresponding videos:</a>
-
-    @if (ViewBag.UserIsAuthorized)
-    {
-        <a asp-area="" asp-controller="Course" asp-action="AddTopic" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">Add topic</a>
-        <a asp-controller="Course" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-        <a asp-controller="Course" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+        <h1>No topics currently! Wait for Lector to update the course.</h1>
     }
 </div>
 
-@if (Model.Topics.Any() && (ViewBag.UserIsStudent || ViewBag.UserIsLector))
-{
-    <br />
-    <div class="list-group">
-        @foreach (var topic in Model.Topics)
-        {
-            <a asp-area="" asp-controller="Video" asp-action="All" asp-route-courseId="@topic.CourseId" asp-route-topicId="@topic.Id" class="list-group-item list-group-item-action active">
-                @topic.Name
-            </a>
-        }
-    </div>
-    <br />
-    <a asp-controller="Video" asp-action="All" asp-route-courseId="@Model.Id" class="btn btn-primary btn-lg btn-block">All Videos</a>
-    <br />
-}
-else if (!ViewBag.UserIsStudent && !ViewBag.UserIsLector)
-{
-    <h1>You need to be a student or lector to view videos.</h1>
-    <a asp-controller="Student" asp-action="Become" class="btn btn-primary btn-lg btn-block">Become a Student!</a>
-}
-else if (ViewBag.UserIsAuthorized)
-{
-    <h1>No topics currently! Please update the course!</h1>
-}
-else
-{
-    <h1>No topics currently! Wait for Lector to update the course.</h1>
-}
+

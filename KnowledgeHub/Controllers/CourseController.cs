@@ -105,6 +105,7 @@ namespace KnowledgeHub.Controllers
         {
             if (!lectors.IsLector(this.User.Id()))
             {
+                TempData[WarningMessageKey] = "You need to be a lector to create a course!";
                 return RedirectToAction(nameof(LectorController.Become), "Lector");
             }
 

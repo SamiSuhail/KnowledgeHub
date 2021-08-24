@@ -5,6 +5,7 @@ using KnowledgeHub.Data.Models;
 using KnowledgeHub.Models.Courses;
 using KnowledgeHub.Services.Courses.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -87,7 +88,7 @@ namespace KnowledgeHub.Services.Courses
             => this.data.Topics.Where(t => t.CourseId.ToString() == courseId)
             .ProjectTo<TopicServiceModel>(this.queryableMapper);
 
-        
+
         public bool AddTopic(int courseId, CourseAddTopicServiceModel model)
         {
             if (this.data.Topics.Where(t => t.CourseId == courseId).Any(t => t.Name == model.Name))
@@ -99,6 +100,8 @@ namespace KnowledgeHub.Services.Courses
             topic.CourseId = courseId;
 
             this.data.Topics.Add(topic);
+
+            this.UpdateLastModified(courseId);
 
             this.data.SaveChanges();
             return true;
@@ -140,7 +143,7 @@ namespace KnowledgeHub.Services.Courses
                 .ToList();
 
             var serviceModel = this.mapper.Map<Course, CourseDetailsServiceModel>(course);
-            serviceModel.Topics = topics;
+            
 
             return serviceModel;
         }
@@ -163,6 +166,7 @@ namespace KnowledgeHub.Services.Courses
             course.Description = description;
             course.ImageUrl = imageUrl == null ? DefaultCourseImageUrl : imageUrl;
 
+            this.UpdateLastModified(id);
             this.data.SaveChanges();
         }
 
@@ -170,6 +174,11 @@ namespace KnowledgeHub.Services.Courses
             => courseQuery
                     .ProjectTo<CourseAllServiceModel>(this.queryableMapper)
                     .ToList();
+
+        private void UpdateLastModified(int courseId)
+            => this.data.Courses
+            .FirstOrDefault(c => c.Id == courseId)
+            .LastModified = DateTime.UtcNow;
 
         public string UserId(int courseId)
             => this.data.Courses

@@ -4,6 +4,8 @@ using KnowledgeHub.Data;
 using KnowledgeHub.Data.Models;
 using KnowledgeHub.Services.Courses.Models;
 using KnowledgeHub.Services.Videos.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 
 namespace KnowledgeHub.Services.Videos
@@ -32,7 +34,7 @@ namespace KnowledgeHub.Services.Videos
             var video = mapper.Map<VideoAddServiceModel, Video>(model);
 
             this.data.Videos.Add(video);
-
+            this.data.Courses.FirstOrDefault(c => c.Id == courseId).LastModified = DateTime.UtcNow;
             this.data.SaveChanges();
             return true;
         }

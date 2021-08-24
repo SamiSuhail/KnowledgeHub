@@ -44,7 +44,7 @@ else
                 <div class="card-body text-center">
                     <h5 class="card-title text-center">@video.Name</h5>
                     <h5 class="card-title text-center">Created on: @video.CreatedOn</h5>
-                    <a href="@video.Url" class="btn btn-primary">View</a>
+                    <a asp-area="" asp-controller="Video" asp-action="Watch" asp-route-id="@video.Id" class="btn btn-primary">View</a>
                 </div>
             </div>
         </div>

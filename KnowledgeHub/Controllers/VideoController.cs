@@ -85,5 +85,20 @@ namespace KnowledgeHub.Controllers
             return Redirect($"/Video/All?courseId={courseId}");
         }
 
+        [Authorize]
+        public IActionResult Watch(int id)
+        {
+            if (!students.IsStudent(this.User.Id()))
+            {
+                TempData[WarningMessageKey] = "You need to be a student to view the videos!";
+                return RedirectToAction(nameof(StudentController.Become), "Student");
+            }
+
+            var studentId = students.GetId(this.User.Id());
+            var url = this.videos.AddView(id, studentId);
+
+            return Redirect(url);
+        }
+
     }
 }

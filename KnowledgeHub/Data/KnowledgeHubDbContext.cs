@@ -13,6 +13,8 @@ namespace KnowledgeHub.Data
         public DbSet<Lector> Lectors { get; init; }
         public DbSet<Student> Students { get; init; }
 
+        public DbSet<StudentsVideos> StudentsVideos {get;init;}
+
         public KnowledgeHubDbContext(DbContextOptions<KnowledgeHubDbContext> options)
             : base(options)
         {

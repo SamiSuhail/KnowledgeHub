@@ -33,7 +33,8 @@ namespace KnowledgeHub.Controllers
 
             if (students.IsStudent(userId))
             {
-                return BadRequest();
+                TempData[GlobalMessageKey] = "You are already a student!";
+                return RedirectToAction(nameof(CourseController.All), "Course");
             }
 
             if (!ModelState.IsValid)

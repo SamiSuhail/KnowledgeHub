@@ -20,6 +20,7 @@
         {
             public const int NameMinLength = 1;
             public const int NameMaxLength = 20;
+            public const int DescriptionMinLength = 20;
         }
 
         public class Person

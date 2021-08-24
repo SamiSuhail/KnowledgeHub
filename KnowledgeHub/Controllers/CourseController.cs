@@ -52,7 +52,8 @@ namespace KnowledgeHub.Controllers
         {
             if (courses.UserId(id) != this.User.Id())
             {
-                return Unauthorized();
+                TempData[WarningMessageKey] = "You cannot edit other lector's courses!";
+                return RedirectToAction(nameof(CourseController.Details), "Course", new{ Id = id});
             }
 
             return View();
@@ -64,7 +65,8 @@ namespace KnowledgeHub.Controllers
         {
             if (courses.UserId(id) != this.User.Id())
             {
-                return Unauthorized();
+                TempData[WarningMessageKey] = "You cannot edit other lector's courses!";
+                return RedirectToAction(nameof(CourseController.Details), "Course", new { Id = id });
             }
 
             if (!ModelState.IsValid)
@@ -145,7 +147,8 @@ namespace KnowledgeHub.Controllers
 
             if (this.courses.UserId(id) != userId)
             {
-                return Unauthorized();
+                TempData[WarningMessageKey] = "You cannot delete other lector's courses!";
+                return RedirectToAction(nameof(CourseController.Details), "Course", new { Id = id });
             }
 
             this.courses.Delete(id);
@@ -171,7 +174,8 @@ namespace KnowledgeHub.Controllers
 
             if (this.courses.UserId(id) != userId)
             {
-                return Unauthorized();
+                TempData[WarningMessageKey] = "You cannot edit other lector's courses!";
+                return RedirectToAction(nameof(CourseController.Details), "Course", new { Id = id });
             }
 
             course.Categories = this.courses.AllCategories();
@@ -205,7 +209,8 @@ namespace KnowledgeHub.Controllers
 
             if (this.courses.UserId(id) != userId)
             {
-                return BadRequest();
+                TempData[WarningMessageKey] = "You cannot edit other lector's courses!";
+                return RedirectToAction(nameof(CourseController.Details), "Course", new { Id = id });
             }
 
             this.courses.Edit(id, model.Name, model.CategoryId, model.Description, model.ImageUrl);

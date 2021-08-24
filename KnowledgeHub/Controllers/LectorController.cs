@@ -32,7 +32,8 @@ namespace KnowledgeHub.Controllers
             
             if (lectors.IsLector(userId))
             {
-                return BadRequest();
+                TempData[WarningMessageKey] = "You are already a lector!";
+                return RedirectToAction(nameof(CourseController.All), "Course");
             }
 
             if (!ModelState.IsValid)

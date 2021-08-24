@@ -34,6 +34,9 @@ namespace KnowledgeHub.Controllers
             }
 
             ViewBag.UserIsAuthorized = this.courses.UserId(courseId) == this.User.Id();
+            ViewBag.TopicDescription = topicId != null
+                                  ? this.courses.GetTopicDescription(topicId)
+                                  : "";
 
             return View(videos.AllVideos(courseId, topicId));
         } 
@@ -43,7 +46,8 @@ namespace KnowledgeHub.Controllers
         {
             if (courses.UserId(courseId) != this.User.Id())
             {
-                return Unauthorized();
+                TempData[WarningMessageKey] = "You cannot edit other lector's courses!";
+                return RedirectToAction(nameof(CourseController.Details), "Course", new { Id = courseId });
             }
 
             return View(new VideoAddFormModel() { Topics = videos.AllVideos(courseId).Topics });
@@ -56,7 +60,8 @@ namespace KnowledgeHub.Controllers
         {
             if (courses.UserId(courseId) != this.User.Id())
             {
-                return Unauthorized();
+                TempData[WarningMessageKey] = "You cannot edit other lector's courses!";
+                return RedirectToAction(nameof(CourseController.Details), "Course", new { Id = courseId });
             }
 
             if (!ModelState.IsValid)

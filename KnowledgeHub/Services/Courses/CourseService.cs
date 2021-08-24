@@ -103,6 +103,9 @@ namespace KnowledgeHub.Services.Courses
             this.data.SaveChanges();
             return true;
         }
+
+        public string GetTopicDescription(int? topicId)
+            => this.data.Topics.FirstOrDefault(t => t.Id == topicId).Description;
         public void Create(CourseCreateServiceModel model)
         {
 

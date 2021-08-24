@@ -6,6 +6,8 @@ using KnowledgeHub.Services.Students.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using static KnowledgeHub.WebConstants;
+
 namespace KnowledgeHub.Controllers
 {
     public class StudentController : Controller
@@ -43,6 +45,8 @@ namespace KnowledgeHub.Controllers
             serviceModel.UserId = userId;
 
             students.Become(serviceModel);
+
+            TempData[GlobalMessageKey] = "Congratulations, you have become a student! Start learning today by browsing our courses.";
 
             return RedirectToAction(nameof(CourseController.All), "Course");
         }

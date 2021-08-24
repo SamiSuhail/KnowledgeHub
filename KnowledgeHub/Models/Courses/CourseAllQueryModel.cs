@@ -1,5 +1,6 @@
 ﻿using KnowledgeHub.Services.Courses.Models;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace KnowledgeHub.Models.Courses
 {
@@ -9,6 +10,7 @@ namespace KnowledgeHub.Models.Courses
 
         public string Category { get; init; }
 
+        [Display(Name = "Search")]
         public string SearchTerm { get; init; }
 
         public CourseSorting Sorting { get; init; }

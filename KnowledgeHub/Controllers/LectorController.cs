@@ -6,6 +6,8 @@ using KnowledgeHub.Services.Lectors.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using static KnowledgeHub.WebConstants;
+
 namespace KnowledgeHub.Controllers
 {
     public class LectorController : Controller
@@ -42,6 +44,8 @@ namespace KnowledgeHub.Controllers
             serviceModel.UserId = userId;
 
             lectors.Become(serviceModel);
+
+            TempData[GlobalMessageKey] = "Congratulations, you are now a lector! Begin spreading knowledge by creating your first course!";
 
             return RedirectToAction(nameof(CourseController.All), "Course");
         }

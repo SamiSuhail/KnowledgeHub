@@ -8,6 +8,8 @@ using KnowledgeHub.Services.Videos.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using static KnowledgeHub.WebConstants;
+
 namespace KnowledgeHub.Controllers
 {
     public class VideoController : Controller
@@ -72,6 +74,8 @@ namespace KnowledgeHub.Controllers
                 model.Topics = this.videos.AllVideos(courseId).Topics;
                 return View(model);
             }
+
+            TempData[GlobalMessageKey] = "New video added.";
 
             return Redirect($"/Video/All?courseId={courseId}");
         }

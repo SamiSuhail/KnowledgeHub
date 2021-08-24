@@ -80,6 +80,9 @@ namespace KnowledgeHub.Controllers
             {
                 return View(model);
             }
+
+            TempData[GlobalMessageKey] = "New topic added.";
+
             return Redirect($"/Video/All?courseId={id}");
         }
 
@@ -113,6 +116,9 @@ namespace KnowledgeHub.Controllers
             serviceModel.LectorId = this.lectors.GetId(this.User.Id());
 
             courses.Create(serviceModel);
+
+            TempData[GlobalMessageKey] = "New course added.";
+
             return Redirect("/Course/All");
         }
 
@@ -143,6 +149,8 @@ namespace KnowledgeHub.Controllers
             }
 
             this.courses.Delete(id);
+
+            TempData[GlobalMessageKey] = "Your course has been deleted permanently.";
 
             return RedirectToAction(nameof(CourseController.All), "Course");
         }
@@ -201,6 +209,8 @@ namespace KnowledgeHub.Controllers
             }
 
             this.courses.Edit(id, model.Name, model.CategoryId, model.Description, model.ImageUrl);
+
+            TempData[GlobalMessageKey] = "Course edited";
 
             return RedirectToAction(nameof(Details), new { Id = id});
         }
